@@ -3,7 +3,7 @@ import PedidosList from "./components/PedidosList";
 function App() {
   return (
     <div className="min-h-screen">
-      <a href="https://bitemeshop.netlify.app/"
+      <a href="https://homebtm.netlify.app/"
         
         className="hover:bg-yellow-950 bg-amber-900 text-white px-4 py-4 rounded-full "
       >
