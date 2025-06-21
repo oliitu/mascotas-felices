@@ -1,0 +1,67 @@
+import { useParams } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import { useEffect, useState, useRef } from "react";
+import { QRCodeCanvas } from "qrcode.react";
+
+function PerfilMascota() {
+  const { id } = useParams();
+  const [mascota, setMascota] = useState(null);
+  const qrRef = useRef(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const docRef = doc(db, "mascotas", id);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setMascota(docSnap.data());
+      }
+    };
+    fetchData();
+  }, [id]);
+
+  if (!mascota) return <p>Cargando...</p>;
+
+  const perfilURL = id; // reemplazá por tu dominio real
+
+  // 🖼 Función para descargar el código QR
+  const descargarQR = () => {
+    const canvas = qrRef.current.querySelector("canvas");
+    const url = canvas.toDataURL("image/png");
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `qr-${mascota.nombre}.png`;
+    link.click();
+  };
+
+  return (
+    <div className="p-4 max-w-md mx-auto bg-white rounded-lg shadow">
+      <h1 className="text-2xl font-bold mb-4">{mascota.nombre}</h1>
+      <p><strong>Raza:</strong> {mascota.raza}</p>
+      <p><strong>Edad:</strong> {mascota.edad}</p>
+      <p><strong>Color:</strong> {mascota.color}</p>
+      <p><strong>Descripción:</strong> {mascota.descripcion}</p>
+      <p><strong>Ciudad:</strong> {mascota.ciudad}</p>
+      <p><strong>Dueño:</strong> {mascota.dueno}</p>
+      <p><strong>Teléfono:</strong> {mascota.telefono}</p>
+      <p><strong>Estado:</strong> {mascota.estado}</p>
+
+      <div className="mt-6 text-center" ref={qrRef}>
+  <p className="mb-2 font-semibold">Escaneá este código QR para ver el perfil:</p>
+  <div className="inline-block p-2 bg-white shadow-lg rounded">
+    <QRCodeCanvas value={perfilURL} size={180} />
+  </div>
+  <button
+    onClick={descargarQR}
+    className="mt-4 px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-700 transition"
+  >
+    Descargar QR
+  </button>
+</div>
+
+    </div>
+  );
+}
+
+export default PerfilMascota;

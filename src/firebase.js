@@ -1,21 +1,28 @@
-// src/firebase.js
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 
-// Configuración de Firebase (tuya está bien)
+
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCPyq8CBVnMsg2YyzWxqwZ8tBbkDMludeY",
-  authDomain: "biteme-page.firebaseapp.com",
-  projectId: "biteme-page",
-  storageBucket: "biteme-page.firebasestorage.app",
-  messagingSenderId: "758449899049",
-  appId: "1:758449899049:web:5fa422b6d64728c015be38",
-  measurementId: "G-6FV0V88L7R"
+  apiKey: "AIzaSyCJC5On87wk9k0wJg2p__C1LpsYC8-F07A",
+  authDomain: "mascotas-felices-fba2f.firebaseapp.com",
+  projectId: "mascotas-felices-fba2f",
+  storageBucket: "mascotas-felices-fba2f.firebasestorage.app",
+  messagingSenderId: "61732435431",
+  appId: "1:61732435431:web:48491987ad44b776e4b942",
+  measurementId: "G-PWHBZF2PHV"
 };
 
-// Inicializar Firebase
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Conectar a Firestore
+const analytics = getAnalytics(app);
 export const db = getFirestore(app);
+export const auth = getAuth(app);
