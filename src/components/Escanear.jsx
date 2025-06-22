@@ -8,50 +8,46 @@ export default function Escanear() {
   const navigate = useNavigate();
 
   useEffect(() => {
-  const html5QrCode = new Html5Qrcode("qr-reader");
+    const html5QrCode = new Html5Qrcode("qr-reader");
 
-  Html5Qrcode.getCameras()
-    .then((devices) => {
-      if (devices && devices.length) {
-        // Buscar la cámara trasera (environment)
-        let cameraId = devices[0].id; // default
-
-        // Opcional: buscar por label que contenga 'back', 'rear', 'environment'
-        const backCamera = devices.find((device) => {
-          const label = device.label.toLowerCase();
-          return label.includes("back") || label.includes("rear") || label.includes("environment");
+    // Función para iniciar el escáner con stream personalizado
+    const startScanner = (stream) => {
+      html5QrCode
+        .start(
+          { deviceId: undefined, facingMode: { exact: "environment" } },
+          { fps: 10, qrbox: { width: 250, height: 250 } },
+          (decodedText) => {
+            html5QrCode.stop().then(() => {
+              navigate(`/ver/${decodedText}`);
+            });
+          },
+          (err) => {
+            console.warn("Escaneo fallido:", err);
+          }
+        )
+        .catch((err) => {
+          setError("No se pudo iniciar la cámara: " + err);
         });
+    };
 
-        if (backCamera) {
-          cameraId = backCamera.id;
-        }
+    // Intentar obtener stream con facingMode environment (trasera)
+    navigator.mediaDevices
+      .getUserMedia({ video: { facingMode: { exact: "environment" } } })
+      .then((stream) => {
+        // Aquí no usamos el stream directamente pero esto forzará la cámara trasera
+        stream.getTracks().forEach((track) => track.stop()); // detenemos el stream ya que html5-qrcode lo manejará
+        startScanner();
+      })
+      .catch((err) => {
+        // Si falla, arrancamos sin constraints para que use cámara por defecto
+        console.warn("No se pudo acceder a cámara trasera, se usa cámara por defecto", err);
+        startScanner();
+      });
 
-        html5QrCode
-          .start(
-            cameraId,
-            { fps: 10, qrbox: { width: 250, height: 250 } },
-            (decodedText) => {
-              html5QrCode.stop().then(() => {
-                navigate(`/ver/${decodedText}`);
-              });
-            },
-            (err) => {
-              console.warn("Escaneo fallido:", err);
-            }
-          )
-          .catch((err) => {
-            setError("No se pudo iniciar la cámara: " + err);
-          });
-      }
-    })
-    .catch((err) => setError("No se encontraron cámaras: " + err));
-
-  return () => {
-    html5QrCode.stop().catch(() => {});
-  };
-}, [navigate]);
-
-
+    return () => {
+      html5QrCode.stop().catch(() => {});
+    };
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center text-center p-4">
