@@ -1,4 +1,3 @@
-// components/Escanear.jsx
 import { useEffect, useState } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 import { useNavigate } from "react-router-dom";
@@ -12,12 +11,22 @@ export default function Escanear() {
 
     html5QrCode
       .start(
-        { facingMode: "environment" }, // Cámara trasera
+        { facingMode: "environment" },
         { fps: 10, qrbox: { width: 250, height: 250 } },
         (decodedText) => {
-          html5QrCode.stop().then(() => {
-            navigate(`${decodedText}`);
-          });
+          try {
+            const url = new URL(decodedText);
+            const rutaRelativa = url.pathname + url.search + url.hash;
+
+            html5QrCode.stop().then(() => {
+              navigate(rutaRelativa);
+            });
+          } catch {
+            // Si no es URL válida, navegamos con decodedText tal cual
+            html5QrCode.stop().then(() => {
+              navigate(`/ver/${decodedText}`);
+            });
+          }
         },
         (err) => {
           console.warn("Escaneo fallido:", err);
