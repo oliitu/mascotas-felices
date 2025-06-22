@@ -12,29 +12,36 @@ export default function Escanear() {
     const html5QrCode = new Html5Qrcode("qr-reader");
 
     Html5Qrcode.getCameras()
-      .then((devices) => {
-        if (devices && devices.length) {
-          const cameraId = devices[0].id;
-          html5QrCode
-            .start(
-              cameraId,
-              { fps: 10, qrbox: { width: 250, height: 250 } },
-              (decodedText) => {
-                // 🔁 Redirigir automáticamente a /mascota/:id
-                html5QrCode.stop().then(() => {
-                  navigate(`/mascota/${decodedText}`);
-                });
-              },
-              (err) => {
-                console.warn("Escaneo fallido:", err);
-              }
-            )
-            .catch((err) => {
-              setError("No se pudo iniciar la cámara: " + err);
+  .then((devices) => {
+    if (devices && devices.length) {
+      // Buscar cámara trasera (environment)
+      const cameraId =
+        devices.find((device) =>
+          device.label.toLowerCase().includes("back") ||
+          device.label.toLowerCase().includes("rear") ||
+          device.label.toLowerCase().includes("environment")
+        )?.id || devices[0].id; // fallback a la primera si no encuentra trasera
+
+      html5QrCode
+        .start(
+          cameraId,
+          { fps: 10, qrbox: { width: 250, height: 250 } },
+          (decodedText) => {
+            html5QrCode.stop().then(() => {
+              navigate(`/mascota/${decodedText}`);
             });
-        }
-      })
-      .catch((err) => setError("No se encontraron cámaras: " + err));
+          },
+          (err) => {
+            console.warn("Escaneo fallido:", err);
+          }
+        )
+        .catch((err) => {
+          setError("No se pudo iniciar la cámara: " + err);
+        });
+    }
+  })
+  .catch((err) => setError("No se encontraron cámaras: " + err));
+
 
     return () => {
       html5QrCode.stop().catch(() => {});
