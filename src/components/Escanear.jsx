@@ -9,25 +9,41 @@ export default function Escanear() {
   useEffect(() => {
     const html5QrCode = new Html5Qrcode("qr-reader");
 
-    // Primero buscamos cámaras disponibles y elegimos la trasera si existe
-    Html5Qrcode.getCameras()
-      .then((devices) => {
-        if (!devices || devices.length === 0) {
-          setError("No se encontraron cámaras.");
-          return;
-        }
-
-        // Buscar la trasera por etiqueta
-        const backCamera = devices.find(({ label }) =>
-          label.toLowerCase().includes("back") ||
-          label.toLowerCase().includes("rear") ||
-          label.toLowerCase().includes("environment")
+    async function startCamera() {
+      try {
+        // Primero intento con facingMode exacto para forzar trasera
+        await html5QrCode.start(
+          { facingMode: { exact: "environment" } },
+          { fps: 10, qrbox: { width: 250, height: 250 } },
+          (decodedText) => {
+            html5QrCode.stop().then(() => {
+              navigate(`/ver/${decodedText}`);
+            });
+          },
+          (err) => {
+            console.warn("Escaneo fallido:", err);
+          }
         );
+      } catch (e) {
+        console.warn("No se pudo iniciar con facingMode exact:", e);
 
-        const cameraId = backCamera ? backCamera.id : devices[0].id;
+        // Fallback: obtener cámaras y usar la trasera por id
+        try {
+          const devices = await Html5Qrcode.getCameras();
+          if (!devices || devices.length === 0) {
+            setError("No se encontraron cámaras.");
+            return;
+          }
 
-        html5QrCode
-          .start(
+          const backCamera = devices.find(({ label }) =>
+            label.toLowerCase().includes("back") ||
+            label.toLowerCase().includes("rear") ||
+            label.toLowerCase().includes("environment")
+          );
+
+          const cameraId = backCamera ? backCamera.id : devices[0].id;
+
+          await html5QrCode.start(
             cameraId,
             { fps: 10, qrbox: { width: 250, height: 250 } },
             (decodedText) => {
@@ -36,14 +52,16 @@ export default function Escanear() {
               });
             },
             (err) => {
-              console.warn("Escaneo fallido:", err);
+              console.warn("Escaneo fallido fallback:", err);
             }
-          )
-          .catch((err) => {
-            setError("No se pudo iniciar la cámara: " + err);
-          });
-      })
-      .catch((err) => setError("Error obteniendo cámaras: " + err));
+          );
+        } catch (err) {
+          setError("Error iniciando cámara en fallback: " + err);
+        }
+      }
+    }
+
+    startCamera();
 
     return () => {
       html5QrCode.stop().catch(() => {});
