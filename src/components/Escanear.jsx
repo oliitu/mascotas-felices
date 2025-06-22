@@ -13,17 +13,27 @@ export default function Escanear() {
   Html5Qrcode.getCameras()
     .then((devices) => {
       if (devices && devices.length) {
-        const backCamera = devices.find(device =>
-          /back|rear|environment/gi.test(device.label)
-        );
-        const cameraId = backCamera ? backCamera.id : devices[0].id;
+        // Buscar la cámara trasera (environment)
+        let cameraId = devices[0].id; // default
+
+        // Opcional: buscar por label que contenga 'back', 'rear', 'environment'
+        const backCamera = devices.find((device) => {
+          const label = device.label.toLowerCase();
+          return label.includes("back") || label.includes("rear") || label.includes("environment");
+        });
+
+        if (backCamera) {
+          cameraId = backCamera.id;
+        }
 
         html5QrCode
           .start(
             cameraId,
             { fps: 10, qrbox: { width: 250, height: 250 } },
             (decodedText) => {
-              // tu lógica para navegar
+              html5QrCode.stop().then(() => {
+                navigate(`/ver/${decodedText}`);
+              });
             },
             (err) => {
               console.warn("Escaneo fallido:", err);
@@ -40,6 +50,7 @@ export default function Escanear() {
     html5QrCode.stop().catch(() => {});
   };
 }, [navigate]);
+
 
 
   return (
