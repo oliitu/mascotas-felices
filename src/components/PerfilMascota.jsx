@@ -22,7 +22,7 @@ function PerfilMascota() {
 
   if (!mascota) return <p>Cargando...</p>;
 
-  const perfilURL = `https://mascotas-felices.netlify.app/ver/${id}`;
+  const perfilURL = `https://mascotas-felicess.netlify.app/ver/${id}`;
 
 
   // 🖼 Función para descargar el código QR
