@@ -24,7 +24,7 @@ export default function Escanear() {
           } catch {
             // Si no es URL válida, navegamos con decodedText tal cual
             html5QrCode.stop().then(() => {
-              navigate(`/ver/${decodedText}`);
+              navigate(`mascotas-felicess.netlify.app/ver/${decodedText}`);
             });
           }
         },
