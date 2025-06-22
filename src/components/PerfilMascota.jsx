@@ -60,8 +60,8 @@ function PerfilMascota() {
 
       <div className="mt-6 text-center" ref={qrRef}>
   <p className="mb-2 font-semibold">Escaneá este código QR para ver el perfil:</p>
-  <div className="inline-block p-2 bg-white shadow-lg rounded">
-    <div className="flex flex-col items-center gap-2">
+  <div className="p-2 bg-white  rounded">
+    <div className="flex flex-col drop-shadow-xl items-center gap-2">
   <QRCodeCanvas value={perfilURL} size={180} />
   
 </div>

@@ -16,6 +16,7 @@ import BottomNav from "./components/BottomNav";
 import Escanear from "./components/Escanear";
 import Perfil from "./components/Perfil";
 import VerMascota from "./components/VerMascota";
+import MascotasEnAdopcion from "./components/MacotasEnAdopcion";
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <Routes>
           <Route path="/escanear" element={<Escanear />} />
           <Route path="/" element={<Home />} />
+          <Route path="/adopcion" element={<MascotasEnAdopcion />} />
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Registro />} />
           <Route path="/mascota/:id" element={<PerfilMascota />} />
