@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../../firebase";
 import { useEffect, useState, useRef } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 
@@ -22,7 +22,8 @@ function PerfilMascota() {
 
   if (!mascota) return <p>Cargando...</p>;
 
-  const perfilURL = id; // reemplazá por tu dominio real
+  const perfilURL = `https://mascotas-felices.netlify.app/ver/${id}`;
+
 
   // 🖼 Función para descargar el código QR
   const descargarQR = () => {
@@ -38,6 +39,16 @@ function PerfilMascota() {
   return (
     <div className="p-4 max-w-md mx-auto bg-white rounded-lg shadow">
       <h1 className="text-2xl font-bold mb-4">{mascota.nombre}</h1>
+   {mascota.imagen && (
+  <img
+  src={mascota.imagen}
+  alt={mascota.nombre}
+  className="w-32 h-32 object-cover rounded-full mx-auto"
+/>
+
+)}
+
+
       <p><strong>Raza:</strong> {mascota.raza}</p>
       <p><strong>Edad:</strong> {mascota.edad}</p>
       <p><strong>Color:</strong> {mascota.color}</p>
@@ -50,7 +61,11 @@ function PerfilMascota() {
       <div className="mt-6 text-center" ref={qrRef}>
   <p className="mb-2 font-semibold">Escaneá este código QR para ver el perfil:</p>
   <div className="inline-block p-2 bg-white shadow-lg rounded">
-    <QRCodeCanvas value={perfilURL} size={180} />
+    <div className="flex flex-col items-center gap-2">
+  <QRCodeCanvas value={perfilURL} size={180} />
+  
+</div>
+
   </div>
   <button
     onClick={descargarQR}

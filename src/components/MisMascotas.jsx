@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { db, auth } from "../firebase";
+import { db, auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { QRCodeCanvas } from "qrcode.react";
@@ -46,6 +46,15 @@ function MisMascotas() {
           {mascotas.map((mascota) => (
             <div key={mascota.id} className="border rounded p-4 shadow-sm bg-white">
               <h3 className="text-xl font-bold mb-1">{mascota.nombre}</h3>
+              {mascota.imagen && (
+ <img
+  src={mascota.imagen}
+  alt={mascota.nombre}
+  className="w-32 h-32 object-cover rounded-full mx-auto"
+/>
+
+)}
+
               <p className="text-gray-700">Raza: {mascota.raza}</p>
               <p className="text-gray-700">Edad: {mascota.edad}</p>
 

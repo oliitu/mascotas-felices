@@ -1,6 +1,6 @@
 // components/Perfil.jsx
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 
 export default function Perfil() {

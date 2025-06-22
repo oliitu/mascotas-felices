@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../../firebase";
 
 function MascotasPerdidas() {
   const [mascotas, setMascotas] = useState([]);
@@ -42,6 +42,14 @@ function MascotasPerdidas() {
           {mascotas.map((mascota) => (
             <div key={mascota.id} className="border rounded-lg shadow-md p-4 bg-white">
               <h3 className="text-xl font-bold mb-1">{mascota.nombre}</h3>
+              {mascota.imagen && (
+  <img
+  src={mascota.imagen}
+  alt={mascota.nombre}
+  className="w-32 h-32 object-cover rounded-full mx-auto"
+/>
+
+)}
               <p className="text-gray-700 mb-1">Raza: {mascota.raza}</p>
               <p className="text-gray-700 mb-1">Color: {mascota.color}</p>
               <p className="text-gray-700 mb-1">Ciudad: {mascota.ciudad}</p>

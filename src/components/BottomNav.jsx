@@ -1,6 +1,6 @@
 // components/BottomNav.jsx
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 
 export default function BottomNav() {
   const [user] = useAuthState(auth);

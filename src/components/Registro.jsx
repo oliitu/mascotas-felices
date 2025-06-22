@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 
 function Registro() {
@@ -58,12 +58,7 @@ function Registro() {
         Iniciar sesión
       </button>
       </form>
-      <button
-        onClick={() => navigate(`/`)}
-        className="mt-6 bg-purple-500 text-white rounded hover:bg-purple-700 px-4 py-2 block mx-auto"
-      >
-        Inicio
-      </button>
+      
       </div>
     
   );

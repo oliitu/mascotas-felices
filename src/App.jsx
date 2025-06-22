@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase";
+import { auth } from "../firebase";
 
 import Login from "./components/Login";
-import Mascotas from "./components/Mascotas";
+import AgregarMascota from "./components/AgregarMascota";
 import RutaPrivada from "./components/RutaPrivada";
 import Registro from "./components/Registro";
 import PerfilMascota from "./components/PerfilMascota";
@@ -15,6 +15,8 @@ import Home from "./components/Inicio";
 import BottomNav from "./components/BottomNav";
 import Escanear from "./components/Escanear";
 import Perfil from "./components/Perfil";
+import VerMascota from "./components/VerMascota";
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -33,10 +35,11 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Registro />} />
           <Route path="/mascota/:id" element={<PerfilMascota />} />
+          <Route path="/ver/:id" element={<VerMascota />} />
           <Route path="/perdidas" element={<MascotasPerdidas />} />
           <Route path="/registrar-mascota" element={
             <RutaPrivada>
-              <Mascotas />
+              <AgregarMascota />
             </RutaPrivada>
           } />
           <Route path="/mis-mascotas" element={
@@ -56,10 +59,11 @@ function App() {
 } />
         </Routes>
 
-        {/* Mostrar nav excepto en login o registro */}
-        {window.location.pathname !== "/login" && window.location.pathname !== "/registro" && (
-          <BottomNav />
-        )}
+        {/* Mostrar nav excepto en login o registro 
+         {window.location.pathname !== "/login" && window.location.pathname !== "/registro" && (
+          
+        )} */}
+        <BottomNav />
       </div>
     </Router>
   );
