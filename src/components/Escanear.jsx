@@ -47,10 +47,25 @@ export default function Escanear() {
             cameraId,
             { fps: 10, qrbox: { width: 250, height: 250 } },
             (decodedText) => {
-              html5QrCode.stop().then(() => {
-                navigate(`/ver/${decodedText}`);
-              });
-            },
+  html5QrCode.stop().then(() => {
+    try {
+      const url = new URL(decodedText);
+
+      // Si la URL contiene la ruta esperada "/ver/"
+      if (url.pathname.startsWith("/ver/")) {
+        // Navegamos usando window.location para evitar concatenar mal
+        window.location.href = decodedText;
+      } else {
+        // Si la URL es otra, navegar a la ruta relativa con decodedText
+        navigate(`/ver/${decodedText}`);
+      }
+    } catch {
+      // No es URL, navegamos con ruta relativa
+      navigate(`/ver/${decodedText}`);
+    }
+  });
+}
+,
             (err) => {
               console.warn("Escaneo fallido fallback:", err);
             }
