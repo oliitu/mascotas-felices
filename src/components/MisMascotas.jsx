@@ -44,7 +44,7 @@ function MisMascotas() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
   {mascotas.map((mascota) => {
-  const url = `https://mascotas-felicess.netlify.app//ver/${mascota.id}`;
+  const url = `https://mascotas-felicess.netlify.app/ver/${mascota.id}`;
   return (
     <div key={mascota.id} className="border rounded-lg p-4 shadow bg-white w-full">
       <div className="grid grid-cols-2 gap-4 items-center">
