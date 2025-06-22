@@ -16,7 +16,7 @@ export default function Escanear() {
         { fps: 10, qrbox: { width: 250, height: 250 } },
         (decodedText) => {
           html5QrCode.stop().then(() => {
-            navigate(`/mascota/${decodedText}`);
+            navigate(`${decodedText}`);
           });
         },
         (err) => {
