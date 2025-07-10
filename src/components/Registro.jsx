@@ -52,7 +52,7 @@ function Registro() {
     <p className="mt-2">¿Ya tenés una cuenta?</p>
       <button
         type="button"
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/login")}
         className="text-purple-500 hover:text-purple-700 underline mt-1"
       >
         Iniciar sesión

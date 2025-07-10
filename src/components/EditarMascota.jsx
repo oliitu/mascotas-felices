@@ -61,30 +61,73 @@ function EditarMascota() {
     <div className="p-4 max-w-md mx-auto">
       <h2 className="text-2xl font-bold mb-4 text-center">Editar Mascota</h2>
       <form onSubmit={manejarGuardar} className="space-y-3">
-        {["nombre", "raza", "descripcion", "color", "edad", "ciudad", "dueno", "telefono", "estado"].map((campo) => (
-          <input
-            key={campo}
-            type="text"
-            name={campo}
-            value={datos[campo] || ""}
-            onChange={manejarCambio}
-            placeholder={campo.charAt(0).toUpperCase() + campo.slice(1)}
-            className="border p-2 w-full rounded"
-            required
-          />
-        ))}
-        <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded w-full">
-          Guardar cambios
-        </button>
-        <button
-  type="button"
-  onClick={manejarEliminar}
-  className="bg-red-600 text-white px-4 py-2 rounded w-full mt-2 hover:bg-red-700"
->
-  Eliminar mascota
-</button>
+  {/* Campos de texto */}
+  {["nombre", "raza", "descripcion", "color", "edad", "ciudad", "dueno", "telefono"].map((campo) => (
+    <input
+      key={campo}
+      type="text"
+      name={campo}
+      value={datos[campo] || ""}
+      onChange={manejarCambio}
+      placeholder={campo.charAt(0).toUpperCase() + campo.slice(1)}
+      className="border p-2 w-full rounded"
+      required
+    />
+  ))}
 
-      </form>
+  {/* Selects para especie, estado y género */}
+  <select
+    name="especie"
+    value={datos.especie || ""}
+    onChange={manejarCambio}
+    className="border p-2 w-full rounded"
+    required
+  >
+    <option value="">Seleccionar especie</option>
+    <option value="perro">Perro</option>
+    <option value="gato">Gato</option>
+  </select>
+
+  <select
+    name="estado"
+    value={datos.estado || ""}
+    onChange={manejarCambio}
+    className="border p-2 w-full rounded"
+    required
+  >
+    <option value="">Seleccionar estado</option>
+    <option value="en adopcion">En adopción</option>
+    <option value="perdida">Perdida</option>
+    <option value="-">-</option>
+  </select>
+
+  <select
+    name="genero"
+    value={datos.genero || ""}
+    onChange={manejarCambio}
+    className="border p-2 w-full rounded"
+    required
+  >
+    <option value="">Género</option>
+    <option value="macho">Macho</option>
+    <option value="hembra">Hembra</option>
+    <option value="-">-</option>
+  </select>
+
+  {/* Botones */}
+  <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded w-full">
+    Guardar cambios
+  </button>
+
+  <button
+    type="button"
+    onClick={manejarEliminar}
+    className="bg-red-600 text-white px-4 py-2 rounded w-full mt-2 hover:bg-red-700"
+  >
+    Eliminar mascota
+  </button>
+</form>
+
     </div>
   );
 }
