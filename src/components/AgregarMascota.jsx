@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
-import { db, auth, storage } from "../../firebase";
+import { db, auth} from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; // 👈
 
 function AgregarMascota() {
   const [imagen, setImagen] = useState(null);
@@ -16,13 +15,13 @@ function AgregarMascota() {
     nombre: "",
     raza: "",
     descripcion: "",
-    color: "",
     edad: "",
     ciudad: "",
     telefono: "",
     estado: "",
     especie: "",
-    genero: "",
+    genero: "", 
+    castracion: ""
   });
 
   const manejarCambio = (e) => {
@@ -60,14 +59,10 @@ urlImagen = urlTransformada;
   creado: Timestamp.now()
 });
 
-
-      alert("Mascota registrada ✅");
-
       setDatos({
         nombre: "",
         raza: "",
         descripcion: "",
-        color: "",
         edad: "",
         ciudad: "",
         telefono: "",
@@ -85,8 +80,14 @@ urlImagen = urlTransformada;
     <div className="p-4 max-w-md mx-auto">
       <h2 className="text-2xl font-bold mb-4">Registrar mascota</h2>
       <form onSubmit={manejarEnvio} className="space-y-3">
-        {/* Campos de texto */}
-        {["nombre", "raza", "descripcion", "color", "edad", "ciudad", "telefono"].map((campo) => (
+        {/* Campos de texto */} 
+        <input
+  type="file"
+  accept="image/*"
+  onChange={(e) => setImagen(e.target.files[0])}
+  className="border p-2 w-full rounded"
+/>
+        {["nombre", "raza", "descripcion", "edad", "ciudad", "telefono"].map((campo) => (
           <input
             key={campo}
             type="text"
@@ -99,12 +100,7 @@ urlImagen = urlTransformada;
           />
         ))}
 
-        <input
-  type="file"
-  accept="image/*"
-  onChange={(e) => setImagen(e.target.files[0])}
-  className="border p-2 w-full rounded"
-/>
+       
 <select
   name="especie"
   value={datos.especie}
@@ -127,7 +123,7 @@ urlImagen = urlTransformada;
   <option value="">Seleccionar estado</option>
   <option value="en adopcion">En adopción</option>
   <option value="perdida">Perdida</option>
-  <option value="-">-</option>
+  <option value=" ">-</option>
 </select>
 <select
   name="genero"
@@ -136,12 +132,20 @@ urlImagen = urlTransformada;
   className="border p-2 w-full rounded"
   required
 >
-  <option value="">Genero</option>
+  <option value="">Sexo</option>
   <option value="macho">Macho</option>
   <option value="hembra">Hembra</option>
-  <option value="-">-</option>
 </select>
-
+<select
+  name="castracion"
+  value={datos.castracion}
+  onChange={manejarCambio}
+  className="border p-2 w-full rounded"
+  required
+>
+  <option value="castrado">Castrado</option>
+  <option value="no castrado">No castrado</option>
+</select>
 
         <button type="submit" className="bg-purple-500 text-white px-4 py-2 rounded w-full">
           Guardar mascota

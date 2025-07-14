@@ -1,18 +1,9 @@
-import React from "react";
-
 export default function Home() {
   return (
     <div className="min-h-screen bg-white text-gray-800">
       {/* Header */}
       <header className="flex justify-between items-center px-8 py-4 border-b border-purple-500">
         <h1 className="text-3xl font-bold text-purple-500">Mascotas Felices</h1>
-        {/* <nav>
-          <ul className="flex space-x-6 text-purple-500 font-semibold">
-            <li><a href="#inicio" className="hover:text-purple-700">Inicio</a></li>
-            <li><a href="#servicios" className="hover:text-purple-700">Servicios</a></li>
-            <li><a href="#contacto" className="hover:text-purple-700">Contacto</a></li>
-          </ul>
-        </nav> */}
       </header>
 
       {/* Hero Section */}
@@ -104,11 +95,6 @@ export default function Home() {
           </p>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-purple-500 text-white text-center py-6">
-        <p>© 2025 Mascotas Felices. Todos los derechos reservados.</p>
-      </footer>
     </div>
   );
 }

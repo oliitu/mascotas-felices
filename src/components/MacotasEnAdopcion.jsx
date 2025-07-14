@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
+import { collection, query, where, getDocs} from "firebase/firestore";
 import { db } from "../../firebase";
-
+import  {Mars, Venus} from "lucide-react"; 
 
 function MascotasEnAdopcion() {
   const [mascotas, setMascotas] = useState([]);
@@ -49,20 +49,30 @@ const mascotasFiltradas = filtroEspecie
   <img
   src={mascota.imagen}
   alt={mascota.nombre}
-  className="w-32 h-32 object-cover rounded-full mx-auto"
+  className="w-20 sm:w-32 h-auto object-cover rounded-full mx-auto"
 />
 
+)}            {mascota.genero && (
+  <p className="flex items-center gap-2">
+    {" "}
+    {mascota.genero === "macho" ? (
+      <span className="flex items-center text-blue-600"><Mars className="w-4 h-4 mr-1" /> </span>
+    ) : (
+      <span className="flex items-center text-pink-600"><Venus className="w-4 h-4 mr-1" /> </span>
+    )}
+  </p>
 )}
-              <p className="text-gray-700 mb-1">Raza: {mascota.raza}</p>
-              <p className="text-gray-700 mb-1">Color: {mascota.color}</p>
-              <p className="text-gray-700 mb-1">Ciudad: {mascota.ciudad}</p>
-              <p className="text-gray-800 mt-2">📞 {mascota.telefono}</p>
+
+              <p className="text-gray-700 text-sm sm:text-base mb-1">{mascota.raza}</p>
+              <p className="text-gray-700 text-sm sm:text-base mb-1">{mascota.castracion}</p>
+              <p className="text-gray-700 text-sm sm:text-base mb-1">Ciudad: {mascota.ciudad}</p>
+              <p className="text-gray-800 text-sm sm:text-base mt-2">📞 {mascota.telefono}</p>
 
               <a
                 href={`https://wa.me/${mascota.telefono}?text=Hola, vi que tu mascota ${mascota.nombre} está en adopción, estoy interesado.`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-center mt-3 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                className="block text-center mt-3 text-xs sm:text-base bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
               >
                 Contactar por WhatsApp
               </a>

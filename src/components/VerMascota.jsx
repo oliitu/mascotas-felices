@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useEffect, useState } from "react";
+import  {Mars, Venus} from "lucide-react"; 
 
 function VerMascota() {
   const { id } = useParams();
@@ -39,12 +40,23 @@ function VerMascota() {
 )}
 
       <div className="space-y-2 text-gray-800">
+        <p>{mascota.descripcion}</p>
+        {mascota.genero && (
+  <p className="flex items-center gap-2">
+    {" "}
+    {mascota.genero === "macho" ? (
+      <span className="flex items-center text-blue-600"><Mars className="w-4 h-4 mr-1" /> </span>
+    ) : (
+      <span className="flex items-center text-pink-600"><Venus className="w-4 h-4 mr-1" /> </span>
+    )}
+  </p>
+)}
+
         <p><strong>Raza:</strong> {mascota.raza}</p>
         <p><strong>Edad:</strong> {mascota.edad}</p>
-        <p><strong>Color:</strong> {mascota.color}</p>
-        <p><strong>Descripción:</strong> {mascota.descripcion}</p>
         <p><strong>Ciudad:</strong> {mascota.ciudad}</p>
-        <p><strong>Estado:</strong> {mascota.estado}</p>
+        <p>{mascota.estado}</p>
+        <p>{mascota.castracion}</p>
       </div>
 
       <div className="mt-6 text-center">

@@ -33,7 +33,6 @@ function EditarMascota() {
     try {
       const ref = doc(db, "mascotas", id);
       await updateDoc(ref, datos);
-      alert("Datos actualizados ✅");
       navigate("/mis-mascotas");
     } catch (error) {
       console.error(error);
@@ -62,7 +61,7 @@ function EditarMascota() {
       <h2 className="text-2xl font-bold mb-4 text-center">Editar Mascota</h2>
       <form onSubmit={manejarGuardar} className="space-y-3">
   {/* Campos de texto */}
-  {["nombre", "raza", "descripcion", "color", "edad", "ciudad", "dueno", "telefono"].map((campo) => (
+  {["nombre", "raza", "descripcion", "edad", "ciudad", "telefono"].map((campo) => (
     <input
       key={campo}
       type="text"
@@ -75,7 +74,6 @@ function EditarMascota() {
     />
   ))}
 
-  {/* Selects para especie, estado y género */}
   <select
     name="especie"
     value={datos.especie || ""}
@@ -98,8 +96,9 @@ function EditarMascota() {
     <option value="">Seleccionar estado</option>
     <option value="en adopcion">En adopción</option>
     <option value="perdida">Perdida</option>
-    <option value="-">-</option>
+    <option value=" ">-</option>
   </select>
+
 
   <select
     name="genero"
@@ -108,12 +107,21 @@ function EditarMascota() {
     className="border p-2 w-full rounded"
     required
   >
-    <option value="">Género</option>
+    <option value="">Sexo</option>
     <option value="macho">Macho</option>
     <option value="hembra">Hembra</option>
-    <option value="-">-</option>
   </select>
 
+<select
+    name="castracion"
+    value={datos.castracion || ""}
+    onChange={manejarCambio}
+    className="border p-2 w-full rounded"
+    required
+  >
+    <option value="Castrado">Castrado</option>
+    <option value="No castrado">No castrado</option>
+  </select>
   {/* Botones */}
   <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded w-full">
     Guardar cambios
