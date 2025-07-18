@@ -39,7 +39,7 @@ function VerMascota() {
 
 )}
 
-      <div className="space-y-2 text-gray-800">
+      <div className="space-y-2 text-center text-gray-800">
         <p>{mascota.descripcion}</p>
         {mascota.genero && (
   <p className="flex items-center gap-2">
@@ -55,8 +55,8 @@ function VerMascota() {
         <p><strong>Raza:</strong> {mascota.raza}</p>
         <p><strong>Edad:</strong> {mascota.edad}</p>
         <p><strong>Ciudad:</strong> {mascota.ciudad}</p>
-        <p>{mascota.estado}</p>
         <p>{mascota.castracion}</p>
+        <p><strong>{mascota.estado}</strong></p>
       </div>
 
       <div className="mt-6 text-center">
