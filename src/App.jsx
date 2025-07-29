@@ -17,6 +17,7 @@ import Escanear from "./components/Escanear";
 import Perfil from "./components/Perfil";
 import VerMascota from "./components/VerMascota";
 import MascotasEnAdopcion from "./components/MacotasEnAdopcion";
+import TutorialPWA from "./components/TutorialPWA";
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
       <div className="pb-16"> {/* padding-bottom para que el contenido no tape el nav */}
         <Routes>
           <Route path="/escanear" element={<Escanear />} />
+          <Route path="/tutorial" element={<TutorialPWA />} />
           <Route path="/" element={<Home />} />
           <Route path="/adopcion" element={<MascotasEnAdopcion />} />
           <Route path="/login" element={<Login />} />

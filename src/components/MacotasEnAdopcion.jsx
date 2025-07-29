@@ -40,7 +40,7 @@ const mascotasFiltradas = filtroEspecie
       {mascotas.length === 0 ? (
         <h2 className="text-center text-gray-600">No hay mascotas en adopción.</h2>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-6">
           {mascotasFiltradas.map((mascota) => (
             
             <div key={mascota.id} className="border rounded-lg shadow-md p-4 bg-white">

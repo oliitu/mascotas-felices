@@ -1,26 +1,6 @@
 @import "tailwindcss";
 @charset "UTF-8";
 
-
-.carrito #carrito {
-  display: none;
-}
-
-.carrito:hover #carrito {
-  display: block;
-  height: fit-content;
-  min-width: 200px;
-  width: fit-content;
-}
-
-
-  .header {
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("/img/header.jpg");
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("/img/header.jpg");
-    background-position: 70%;
-    background-size: cover;
-    position: relative;
-  }
   
   html, body, #root {
     height: 100%;
@@ -29,3 +9,26 @@
     padding: 0;
   }
   
+  .nunito {
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+.quicksand {
+  font-family: "Quicksand", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+}
+.comfortaa {
+  font-family: "Comfortaa", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
+body {
+  font-family: Comfortaa, sans-serif;
+
+}
