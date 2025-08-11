@@ -38,7 +38,7 @@ function MisMascotas() {
 
   return (
     <div className="p-4 max-w-2xl mx-auto justify-items-center">
-      <h2 className="text-3xl font-bold mb-6 text-center">Mis Mascotas</h2>
+      <h2 className="text-3xl text-purple-600 font-bold mb-6 text-center">Mis Mascotas</h2>
       {mascotas.length === 0 ? (
         <p className="text-center">Todavía no cargaste mascotas.</p>
       ) : (
@@ -46,7 +46,7 @@ function MisMascotas() {
   {mascotas.map((mascota) => {
   const url = `https://mascotas-felicess.netlify.app/ver/${mascota.id}`;
   return (
-    <div key={mascota.id} className="border rounded-lg p-4 shadow bg-white w-full">
+    <div key={mascota.id} className="border border-gray-400 rounded-lg p-4 shadow bg-white w-full">
       <div className="grid grid-cols-2 gap-4 items-center">
         {/* Columna 1: Info */}
         <div className="text-center md:text-left">

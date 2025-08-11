@@ -27,15 +27,6 @@ export default function TutorialPWA() {
             <li>Confirmá tocando "Agregar".</li>
           </ol>
         </div>
-
-        <div>
-          <h2 className="text-xl font-semibold text-purple-500">🖥️ En computadora:</h2>
-          <ol className="list-decimal list-inside mt-2 space-y-1">
-            <li>Abrí la app en Chrome.</li>
-            <li>Hacé clic en el ícono de instalación que aparece en la barra de direcciones (una flechita con un "+" o un monitor).</li>
-            <li>Seguí los pasos para instalarla como una app.</li>
-          </ol>
-        </div>
       </div>
     </div>
   );

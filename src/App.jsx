@@ -18,6 +18,8 @@ import Perfil from "./components/Perfil";
 import VerMascota from "./components/VerMascota";
 import MascotasEnAdopcion from "./components/MacotasEnAdopcion";
 import TutorialPWA from "./components/TutorialPWA";
+import QueEs from "./components/QueEs";
+import QuienesSomos from "./components/QuienesSomos";
 
 
 function App() {
@@ -34,6 +36,8 @@ function App() {
         <Routes>
           <Route path="/escanear" element={<Escanear />} />
           <Route path="/tutorial" element={<TutorialPWA />} />
+          <Route path="/que-es" element={<QueEs />} />
+          <Route path="/quienes-somos" element={<QuienesSomos />} />
           <Route path="/" element={<Home />} />
           <Route path="/adopcion" element={<MascotasEnAdopcion />} />
           <Route path="/login" element={<Login />} />
@@ -62,11 +66,6 @@ function App() {
   </RutaPrivada>
 } />
         </Routes>
-
-        {/* Mostrar nav excepto en login o registro 
-         {window.location.pathname !== "/login" && window.location.pathname !== "/registro" && (
-          
-        )} */}
         <BottomNav />
       </div>
     </Router>

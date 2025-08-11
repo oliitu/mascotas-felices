@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { collection, query, where, getDocs} from "firebase/firestore";
 import { db } from "../../firebase";
-import  {Mars, Venus} from "lucide-react"; 
+import  {Mars, Venus, Dog, Cat} from "lucide-react"; 
 
 function MascotasPerdidas() {
   const [mascotas, setMascotas] = useState([]);
@@ -22,63 +22,85 @@ const mascotasFiltradas = filtroEspecie
   : mascotas;
 
   return (
-    <div className="p-3 max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold text-center mb-6">Mascotas Perdidas</h2>
+    <div className="px-4 sm:px-7 py-7 max-w-4xl  mx-auto">
+      <h2 className="text-3xl font-bold text-center text-purple-600 mb-6">Mascotas Perdidas</h2>
 <div className="mb-4 text-center">
-  <label className="mr-2 font-semibold">Filtrar por especie:</label>
-  <select
-    value={filtroEspecie}
-    onChange={(e) => setFiltroEspecie(e.target.value)}
-    className="border p-2 rounded"
-  >
-    <option value="">Todas</option>
-    <option value="perro">Perro</option>
-    <option value="gato">Gato</option>
-  </select>
+  <label className="block mb-2 font-semibold">Filtrar por especie:</label>
+  <div className="flex justify-center gap-4">
+    {/* Botón Perro */}
+    <button
+      onClick={() => setFiltroEspecie(filtroEspecie === "perro" ? "" : "perro")}
+      className={`p-3 rounded-full border-2 transition ${
+        filtroEspecie === "perro"
+          ? "bg-purple-200 border-purple-500 text-purple-700"
+          : "bg-white border-gray-300 hover:bg-gray-100"
+      }`}
+    >
+      <Dog size={28} />
+    </button>
+
+    {/* Botón Gato */}
+    <button
+      onClick={() => setFiltroEspecie(filtroEspecie === "gato" ? "" : "gato")}
+      className={`p-3 rounded-full border-2 transition ${
+        filtroEspecie === "gato"
+          ? "bg-purple-200 border-purple-500 text-purple-700"
+          : "bg-white border-gray-300 hover:bg-gray-100"
+      }`}
+    >
+      <Cat size={28} />
+    </button>
+  </div>
 </div>
+
 
       {mascotas.length === 0 ? (
         <h2 className="text-center text-gray-600">No hay mascotas perdidas.</h2>
       ) : (
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-6">
-          {mascotasFiltradas.map((mascota) => (
-            <div key={mascota.id} className="border rounded-lg shadow-md p-1 lg:p-4 bg-white">
-              <h3 className="text-xl font-bold mb-1">{mascota.nombre}</h3>
-              {mascota.imagen && (
-  <img
-  src={mascota.imagen}
-  alt={mascota.nombre}
-  className="w-20 sm:w-32 h-auto object-cover rounded-full mx-auto"
-/>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+  {mascotasFiltradas.map((mascota) => (
+    <div
+      key={mascota.id}
+      className="border border-gray-300 rounded-lg shadow-md p-6 bg-white hover:shadow-lg transition-shadow flex flex-col items-center text-center"
+    >
+      <h3 className="text-2xl font-semibold mb-3">{mascota.nombre}</h3>
 
-)} 
-<div className="">  
-{mascota.genero && (
-  <p className="flex items-center gap-2">
-    {" "}
-    {mascota.genero === "macho" ? (
-      <span className="flex items-center text-blue-600"><Mars className="w-4 h-4 mr-1" /> </span>
-    ) : (
-      <span className="flex items-center text-pink-600"><Venus className="w-4 h-4 mr-1" /> </span>
-    )}
-  </p>
-)}
-              <p className="text-gray-700 text-sm sm:text-base mb-1">{mascota.raza}</p>
-              <p className="text-gray-700 text-sm sm:text-base mb-1">{mascota.castracion}</p>
-              <p className="text-gray-700 text-sm sm:text-base mb-1">Ciudad: {mascota.ciudad}</p>
-              <p className="text-gray-800 text-sm sm:text-base mt-2">📞{mascota.telefono}</p>
+      {mascota.imagen && (
+        <img
+          src={mascota.imagen}
+          alt={mascota.nombre}
+          className="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-full mb-4"
+        />
+      )}
+
+      {mascota.genero && (
+        <p className="flex items-center justify-center gap-2 mb-2 text-lg">
+          {mascota.genero === "macho" ? (
+            <span className="text-blue-600 flex items-center gap-1">
+              <Mars className="w-5 h-5" /> Macho
+            </span>
+          ) : (
+            <span className="text-pink-600 flex items-center gap-1">
+              <Venus className="w-5 h-5" /> Hembra
+            </span>
+          )}
+        </p>
+      )}
+
+      <p className="text-gray-700 text-base mb-1">{mascota.ciudad}</p>
+      <p className="text-gray-800 text-base mt-2 mb-4">📞 {mascota.telefono}</p>
+
+      <a
+        href={`https://wa.me/${mascota.telefono}?text=Hola, vi que tu mascota ${mascota.nombre} está en adopción, estoy interesado.`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-block w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-2 rounded transition"
+      >
+        WhatsApp
+      </a>
+    </div>
+  ))}
 </div>
-              <a
-                href={`https://wa.me/${mascota.telefono}?text=Hola, vi que tu mascota ${mascota.nombre} está perdida. ¿Puedo ayudarte?`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-center mt-3 text-xs sm:text-base bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
-              >
-                Contactar por WhatsApp
-              </a>
-            </div>
-          ))}
-        </div>
       )}
     </div>
   );

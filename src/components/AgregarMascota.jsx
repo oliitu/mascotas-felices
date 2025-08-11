@@ -78,14 +78,14 @@ urlImagen = urlTransformada;
 
   return (
     <div className="p-4 max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Registrar mascota</h2>
+      <h2 className="text-2xl text-purple-600 font-bold mb-4">Registrar mascota</h2>
       <form onSubmit={manejarEnvio} className="space-y-3">
         {/* Campos de texto */} 
         <input
   type="file"
   accept="image/*"
   onChange={(e) => setImagen(e.target.files[0])}
-  className="border p-2 w-full rounded"
+  className="border bg-white p-2 w-full rounded"
 />
         {["nombre", "raza", "descripcion", "edad", "ciudad", "telefono"].map((campo) => (
           <input
@@ -95,7 +95,7 @@ urlImagen = urlTransformada;
             value={datos[campo]}
             onChange={manejarCambio}
             placeholder={campo.charAt(0).toUpperCase() + campo.slice(1)}
-            className="border p-2 w-full rounded"
+            className="border bg-white p-2 w-full rounded"
             required
           />
         ))}
@@ -105,7 +105,7 @@ urlImagen = urlTransformada;
   name="especie"
   value={datos.especie}
   onChange={manejarCambio}
-  className="border p-2 w-full rounded"
+  className="border bg-white p-2 w-full rounded"
   required
 >
   <option value="">Seleccionar especie</option>
@@ -117,7 +117,7 @@ urlImagen = urlTransformada;
   name="estado"
   value={datos.estado}
   onChange={manejarCambio}
-  className="border p-2 w-full rounded"
+  className="border bg-white p-2 w-full rounded"
   required
 >
   <option value="">Seleccionar estado</option>
@@ -129,22 +129,12 @@ urlImagen = urlTransformada;
   name="genero"
   value={datos.genero}
   onChange={manejarCambio}
-  className="border p-2 w-full rounded"
+  className="border bg-white p-2 w-full rounded"
   required
 >
   <option value="">Sexo</option>
   <option value="macho">Macho</option>
   <option value="hembra">Hembra</option>
-</select>
-<select
-  name="castracion"
-  value={datos.castracion}
-  onChange={manejarCambio}
-  className="border p-2 w-full rounded"
-  required
->
-  <option value="castrado">Castrado</option>
-  <option value="no castrado">No castrado</option>
 </select>
 
         <button type="submit" className="bg-purple-500 text-white px-4 py-2 rounded w-full">

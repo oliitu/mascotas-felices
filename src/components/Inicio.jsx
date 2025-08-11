@@ -1,40 +1,56 @@
 import { useNavigate } from "react-router-dom";
+import { Info, PawPrint, Download } from "lucide-react";
 
 export default function Home() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-purple-50 text-gray-800">
+    <div className="min-h-screen bg-gradient-to-b from-purple-100 to-purple-200 text-gray-800">
       {/* Hero Section */}
       <section
         id="inicio"
-        className="flex flex-col items-center justify-center text-center px-6 py-20 "
+        className="flex flex-col items-center justify-center text-center px-6 pb-16 pt-10 sm:pt-16"
       >
-        <h2 className="text-5xl nunito text-purple-500 mb-4">
+        {/* Icono grande */}
+        <div className="bg-white p-0 sm:p-4 rounded-full shadow-lg mb-4">
+          <img className=" p-4 h-25" src="/icons/favicon.svg"></img>
+        </div>
+
+        <h2 className="text-3xl sm:text-5xl font-bold text-purple-600 mb-4">
           ¡Bienvenido a Mascotas Felices!
         </h2>
-        <p className="text-lg max-w-xl mb-8 text-gray-700">
-          El lugar donde tus mascotas son felices ahre.
+        <p className="text-base sm:text-lg max-w-md mb-8 text-gray-700">
+          "Las mascotas no son nuestra vida entera, pero hacen que nuestra vida esté completa."
         </p>
 
         {/* Botones */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          <button
-            onClick={() => navigate("/tutorial")}
-            className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-8 rounded-full transition duration-300"
-          >
-            Cómo descargar la app
-          </button>
-
+        <div className="flex flex-col gap-3 w-full max-w-xs">
           <button
             onClick={() => navigate("/mis-mascotas")}
-            className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-8 rounded-full transition duration-300"
+            className="flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-full shadow-md transition"
           >
-            Ver mis mascotas
+            <PawPrint size={20} /> Ver mis mascotas
+          </button>
+          <button
+            onClick={() => navigate("/tutorial")}
+            className="flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-full shadow-md transition"
+          >
+            <Download size={20} /> Cómo descargar la app
+          </button>
+          <button
+            onClick={() => navigate("/que-es")}
+            className="flex items-center justify-center gap-2 bg-white hover:bg-purple-100 text-purple-600 font-semibold py-3 px-6 rounded-full shadow-md border border-purple-300 transition"
+          >
+            <Info size={20} /> ¿Qué es "Mascotas Felices"?
+          </button>
+          <button
+            onClick={() => navigate("/quienes-somos")}
+            className="flex items-center justify-center gap-2 bg-white hover:bg-purple-100 text-purple-600 font-semibold py-3 px-6 rounded-full shadow-md border border-purple-300 transition"
+          >
+            <Info size={20} /> ¿Quiénes somos?
           </button>
         </div>
       </section>
     </div>
   );
 }
-// bg-[url('/public/img/bg.png')] bg-cover bg-center

@@ -10,12 +10,12 @@ export default function BottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-purple-200 shadow-lg z-50">
       <div className="flex justify-around items-center h-16 text-purple-500 text-sm font-semibold">
         
-        <a href="/" className="flex flex-col items-center">
+        <a href="/" className="flex flex-col text-xs sm:text-base items-center">
           <HomeIcon/>
           Inicio
         </a>
         
-        <a href="/perdidas" className="flex flex-col items-center">
+        <a href="/perdidas" className="flex flex-col text-xs sm:text-base items-center">
           <Dog/>
           Perdidas
         </a>
@@ -26,20 +26,13 @@ export default function BottomNav() {
         >
           <QrCode/>
         </a>
-
-        {/* <a href="/mis-mascotas" className="flex flex-col items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          Mascotas
-        </a> */}
-
-        <a href="/adopcion" className="flex flex-col items-center">
+        
+        <a href="/adopcion" className="flex flex-col text-xs sm:text-base items-center">
           <Heart/>
           Adoptar
         </a>
 
-        <a href={user ? "/perfil" : "/login"} className="flex flex-col items-center">
+        <a href={user ? "/perfil" : "/login"} className="flex text-xs sm:text-base flex-col items-center">
           <User/>
           {user ? "Perfil" : "Login"}
         </a>

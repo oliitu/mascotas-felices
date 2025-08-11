@@ -19,20 +19,20 @@ function Login() {
   };
 
   return (
-    <div>
+    <div className="min-h-screen flex items-center justify-center pb-20">
     <form onSubmit={manejarLogin} className="p-4 max-w-sm mx-auto text-center">
       <h2 className="text-2xl font-bold mb-4">Iniciar sesión</h2>
       <input
         type="email"
         placeholder="Correo"
-        className="border p-2 w-full mb-2"
+        className="border bg-white  p-2 w-full mb-2"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
       <input
         type="password"
         placeholder="Contraseña"
-        className="border p-2 w-full mb-4"
+        className="border bg-white  p-2 w-full mb-4"
         value={clave}
         onChange={(e) => setClave(e.target.value)}
       />
