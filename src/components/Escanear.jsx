@@ -6,19 +6,15 @@ export default function Escanear() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Función para manejar la navegación según decodedText
   const manejarNavegacion = (decodedText) => {
     try {
       const url = new URL(decodedText);
-      // Si la URL es de tu dominio y tiene /ver/ en el path, redirijo directo
       if (url.hostname.includes("mascotas-felicess.netlify.app") && url.pathname.startsWith("/ver/")) {
         window.location.href = decodedText;
       } else {
-        // Si es URL pero no esperada, podés manejar distinto o hacer fallback
         navigate(`/ver/${decodedText}`);
       }
     } catch {
-      // decodedText no es URL, navego con ruta relativa
       navigate(`/ver/${decodedText}`);
     }
   };
@@ -28,53 +24,34 @@ export default function Escanear() {
 
     async function startCamera() {
       try {
-        // Intento abrir la cámara trasera usando facingMode
+        // Listar cámaras disponibles
+        const devices = await Html5Qrcode.getCameras();
+        if (!devices || devices.length === 0) {
+          setError("No se encontraron cámaras.");
+          return;
+        }
+
+        // Buscar la trasera que NO sea ultra wide
+        const backCamera = devices.find(({ label }) =>
+          (label.toLowerCase().includes("back") || label.toLowerCase().includes("rear")) &&
+          !label.toLowerCase().includes("wide") &&
+          !label.toLowerCase().includes("0.5")
+        ) || devices.find(({ label }) =>
+          label.toLowerCase().includes("back") || label.toLowerCase().includes("rear")
+        ) || devices[0];
+
         await html5QrCode.start(
-          { facingMode: { exact: "environment" } },
+          backCamera.id,
           { fps: 10, qrbox: { width: 250, height: 250 } },
           (decodedText) => {
-            html5QrCode.stop().then(() => {
-              manejarNavegacion(decodedText);
-            });
+            html5QrCode.stop().then(() => manejarNavegacion(decodedText));
           },
           (err) => {
             console.warn("Escaneo fallido:", err);
           }
         );
-      } catch (e) {
-        console.warn("No se pudo iniciar con facingMode exact:", e);
-
-        // Fallback por si no funciona el facingMode
-        try {
-          const devices = await Html5Qrcode.getCameras();
-          if (!devices || devices.length === 0) {
-            setError("No se encontraron cámaras.");
-            return;
-          }
-
-          const backCamera = devices.find(({ label }) =>
-            label.toLowerCase().includes("back") ||
-            label.toLowerCase().includes("rear") ||
-            label.toLowerCase().includes("environment")
-          );
-
-          const cameraId = backCamera ? backCamera.id : devices[0].id;
-
-          await html5QrCode.start(
-            cameraId,
-            { fps: 10, qrbox: { width: 250, height: 250 } },
-            (decodedText) => {
-              html5QrCode.stop().then(() => {
-                manejarNavegacion(decodedText);
-              });
-            },
-            (err) => {
-              console.warn("Escaneo fallido fallback:", err);
-            }
-          );
-        } catch (err) {
-          setError("Error iniciando cámara en fallback: " + err);
-        }
+      } catch (err) {
+        setError("Error iniciando cámara: " + err);
       }
     }
 

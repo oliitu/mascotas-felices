@@ -20,6 +20,7 @@ import MascotasEnAdopcion from "./components/MacotasEnAdopcion";
 import TutorialPWA from "./components/TutorialPWA";
 import QueEs from "./components/QueEs";
 import QuienesSomos from "./components/QuienesSomos";
+import BackButton from "./components/BackButton";
 
 
 function App() {
@@ -32,7 +33,9 @@ function App() {
 
   return (
     <Router>
-      <div className="pb-16"> {/* padding-bottom para que el contenido no tape el nav */}
+      <div className="pb-16"> 
+       <div className="mt-1 fixed"><BackButton/></div>
+
         <Routes>
           <Route path="/escanear" element={<Escanear />} />
           <Route path="/tutorial" element={<TutorialPWA />} />

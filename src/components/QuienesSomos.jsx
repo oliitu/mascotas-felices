@@ -22,19 +22,23 @@ export default function QuienesSomos() {
         </p>
         <div className="flex flex-col gap-3 w-full max-w-xs">
             <div className="bg-white justify-items-center p-6 rounded-xl shadow hover:shadow-lg transition max-w-[320px] w-full mx-auto">
-              {/* <Heart className="text-purple-500 mb-4" size={40} /> */}
               <h3 className="font-bold mb-2 text-base sm:text-xl text-center">¿Por qué hicimos esta app?</h3>
               <p className="text-gray-600 text-xs sm:text-base text-center">
                 Hicimos esta app porque nos pareció que era necesario tener registradas a nuestras mascotas, por si se pierden o les pasa algo.
               </p>
             </div>
-            <p className="text-gray-600 mt-10 text-xs text-center">
-                app web desarrollada por: <a 
-                className="text-purple-600 underline" 
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://www.instagram.com/lituweb?igsh=MTQ0NGd6ZzFhbDB1OQ%3D%3D&utm_source=qr">LituWeb</a>
-              </p>
+            <p className="text-gray-600 text-xs sm:text-sm text-center mt-4">
+  App web desarrollada por{" "}
+  <a
+    href="https://www.instagram.com/lituweb"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="font-semibold text-purple-600 hover:text-purple-700 underline"
+  >
+    @lituweb
+  </a>
+</p>
+
         </div>
       </section>
     

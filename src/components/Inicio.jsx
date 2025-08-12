@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Info, PawPrint, Download } from "lucide-react";
+import { Info, PawPrint, Download, Users } from "lucide-react";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ export default function Home() {
             onClick={() => navigate("/quienes-somos")}
             className="flex items-center justify-center gap-2 bg-white hover:bg-purple-100 text-purple-600 font-semibold py-3 px-6 rounded-full shadow-md border border-purple-300 transition"
           >
-            <Info size={20} /> ¿Quiénes somos?
+            <Users size={20} /> ¿Quiénes somos?
           </button>
         </div>
       </section>
