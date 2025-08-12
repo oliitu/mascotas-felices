@@ -4,11 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { PawPrint } from "lucide-react";
 import { useState } from "react";
 import { updateProfile } from "firebase/auth";
+import Toast from "./Toast"; // importa tu toast
 
 export default function Perfil() {
   const [user] = useAuthState(auth);
   const [nuevoNombre, setNuevoNombre] = useState("");
+  const [toastMsg, setToastMsg] = useState(""); // estado para mensaje
   const navigate = useNavigate();
+
+  const mostrarToast = (msg) => {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(""), 2500);
+  };
 
   const cerrarSesion = () => {
     auth.signOut();
@@ -16,23 +23,25 @@ export default function Perfil() {
   };
 
   const cambiarNombre = async () => {
-    if (!nuevoNombre.trim()) return alert("El nombre no puede estar vacío");
+    if (!nuevoNombre.trim()) return mostrarToast("El nombre no puede estar vacío");
     try {
       await updateProfile(user, { displayName: nuevoNombre });
-      alert("Nombre actualizado ✅");
+      mostrarToast("Nombre actualizado ✅");
       setNuevoNombre("");
     } catch (error) {
       console.error(error);
-      alert("Error al actualizar el nombre");
+      mostrarToast("Error al actualizar el nombre");
     }
   };
 
   if (!user) return <p className="text-center mt-10">Cargando perfil...</p>;
 
   return (
-    <div className="min-h-screen p-6 flex flex-col justify-center pb-30 items-center text-center">
+    <div className="min-h-screen p-6 flex flex-col justify-center items-center text-center">
+      <Toast message={toastMsg} /> {/* componente toast */}
+
       <div className="bg-purple-200 rounded-full border-2 border-purple-500 h-24 w-24 flex items-center justify-center text-4xl font-bold text-purple-600 mb-4">
-        <PawPrint size={42}/>
+        <PawPrint size={42} />
       </div>
 
       <h1 className="text-2xl font-bold text-purple-600 mb-1">

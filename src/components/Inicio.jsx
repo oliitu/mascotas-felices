@@ -1,11 +1,27 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Info, PawPrint, Download, Users } from "lucide-react";
+import Toast from "./Toast";
 
 export default function Home() {
   const navigate = useNavigate();
+  const [toastMessage, setToastMessage] = useState("");
+
+  const handleMisMascotas = () => {
+    const user = localStorage.getItem("user"); // O la lógica real de tu auth
+    if (user) {
+      navigate("/mis-mascotas");
+    } else {
+      setToastMessage("Tenés que iniciar sesión");
+      setTimeout(() => setToastMessage(""), 3000); // Oculta el toast después de 3s
+      navigate("/"); // Si querés que se quede en inicio, no pongas esto
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-100 to-purple-200 text-gray-800">
+      
+
       {/* Hero Section */}
       <section
         id="inicio"
@@ -13,7 +29,7 @@ export default function Home() {
       >
         {/* Icono grande */}
         <div className="bg-white p-0 sm:p-4 rounded-full shadow-lg mb-4">
-          <img className=" p-4 h-25" src="/icons/favicon.svg"></img>
+          <img className="p-4 h-25" src="/icons/favicon.svg" alt="Logo" />
         </div>
 
         <h2 className="text-3xl sm:text-5xl font-bold text-purple-600 mb-4">
@@ -26,7 +42,7 @@ export default function Home() {
         {/* Botones */}
         <div className="flex flex-col gap-3 w-full max-w-xs">
           <button
-            onClick={() => navigate("/mis-mascotas")}
+            onClick={handleMisMascotas}
             className="flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-full shadow-md transition"
           >
             <PawPrint size={20} /> Ver mis mascotas
@@ -51,6 +67,7 @@ export default function Home() {
           </button>
         </div>
       </section>
+      <Toast message={toastMessage} />
     </div>
   );
 }

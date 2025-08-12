@@ -21,7 +21,7 @@ function Registro() {
       });
 
       alert("Usuario registrado exitosamente ✅");
-      navigate("/"); // redirigir después del registro
+      navigate("/perfil"); // redirigir después del registro
     } catch (error) {
       console.error(error.code, error.message);
       alert(`Error: ${error.code}`);

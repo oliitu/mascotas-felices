@@ -12,7 +12,7 @@ function Login() {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, clave);
-      navigate("/");
+      navigate("/perfil");
     } catch (error) {
       alert(`Error: ${error.code}`);
     }

@@ -1,14 +1,14 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useEffect, useState } from "react";
-import { deleteDoc } from "firebase/firestore";
-
+import Toast from "./Toast"; // 👈 importa tu componente Toast
 
 function EditarMascota() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [datos, setDatos] = useState(null);
+  const [toastMsg, setToastMsg] = useState("");
 
   useEffect(() => {
     const obtenerMascota = async () => {
@@ -17,8 +17,8 @@ function EditarMascota() {
       if (snap.exists()) {
         setDatos(snap.data());
       } else {
-        alert("Mascota no encontrada");
-        navigate("/mis-mascotas");
+        setToastMsg("Mascota no encontrada ❌");
+        setTimeout(() => navigate("/mis-mascotas"), 2000);
       }
     };
     obtenerMascota();
@@ -33,28 +33,36 @@ function EditarMascota() {
     try {
       const ref = doc(db, "mascotas", id);
       await updateDoc(ref, datos);
-      navigate("/mis-mascotas");
+      setToastMsg("Mascota actualizada ✅");
+      setTimeout(() => navigate("/mis-mascotas"), 2000); // espera a mostrar el toast
     } catch (error) {
       console.error(error);
-      alert("Error al guardar los cambios");
+      setToastMsg("Error al guardar los cambios ❌");
     }
   };
+
   const manejarEliminar = async () => {
-  const confirmar = window.confirm("¿Estás segura de que querés eliminar esta mascota?");
-  if (!confirmar) return;
+    const confirmar = window.confirm("¿Estás segura de que querés eliminar esta mascota?");
+    if (!confirmar) return;
 
-  try {
-    const ref = doc(db, "mascotas", id);
-    await deleteDoc(ref);
-    alert("Mascota eliminada 🗑️");
-    navigate("/mis-mascotas");
-  } catch (error) {
-    console.error(error);
-    alert("Error al eliminar la mascota");
-  }
-};
-
-  if (!datos) return <p className="text-center mt-8">Cargando...</p>;
+    try {
+      const ref = doc(db, "mascotas", id);
+      await deleteDoc(ref);
+      setToastMsg("Mascota eliminada 🗑️");
+      setTimeout(() => navigate("/mis-mascotas"), 2000);
+    } catch (error) {
+      console.error(error);
+      setToastMsg("Error al eliminar la mascota ❌");
+    }
+  };
+if (!datos) {
+  return (
+    <div className="p-4 text-center">
+      Cargando...
+      <Toast message={toastMsg} />
+    </div>
+  );
+}
 
   return (
     <div className="p-4 max-w-md mx-auto">
@@ -126,7 +134,7 @@ function EditarMascota() {
     Eliminar mascota
   </button>
 </form>
-
+<Toast message={toastMsg} />
     </div>
   );
 }
