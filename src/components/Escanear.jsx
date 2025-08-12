@@ -20,25 +20,38 @@ export default function Escanear() {
   };
 
   useEffect(() => {
-    const html5QrCode = new Html5Qrcode("qr-reader");
+  const html5QrCode = new Html5Qrcode("qr-reader");
 
-    async function startCamera() {
+  async function startCamera() {
+    try {
+      // iOS: intentar usar facingMode directamente
+      await html5QrCode.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: { width: 250, height: 250 } },
+        (decodedText) => {
+          html5QrCode.stop().then(() => manejarNavegacion(decodedText));
+        },
+        (err) => console.warn("Escaneo fallido:", err)
+      );
+    } catch {
       try {
-        // Listar cámaras disponibles
+        // Si falla, buscar cámaras manualmente (Android u otros)
         const devices = await Html5Qrcode.getCameras();
-        if (!devices || devices.length === 0) {
+        if (!devices.length) {
           setError("No se encontraron cámaras.");
           return;
         }
 
-        // Buscar la trasera que NO sea ultra wide
-        const backCamera = devices.find(({ label }) =>
-          (label.toLowerCase().includes("back") || label.toLowerCase().includes("rear")) &&
-          !label.toLowerCase().includes("wide") &&
-          !label.toLowerCase().includes("0.5")
-        ) || devices.find(({ label }) =>
-          label.toLowerCase().includes("back") || label.toLowerCase().includes("rear")
-        ) || devices[0];
+        const backCamera =
+          devices.find(({ label }) =>
+            (label.toLowerCase().includes("back") || label.toLowerCase().includes("rear")) &&
+            !label.toLowerCase().includes("wide") &&
+            !label.toLowerCase().includes("0.5")
+          ) ||
+          devices.find(({ label }) =>
+            label.toLowerCase().includes("back") || label.toLowerCase().includes("rear")
+          ) ||
+          devices[0];
 
         await html5QrCode.start(
           backCamera.id,
@@ -46,21 +59,21 @@ export default function Escanear() {
           (decodedText) => {
             html5QrCode.stop().then(() => manejarNavegacion(decodedText));
           },
-          (err) => {
-            console.warn("Escaneo fallido:", err);
-          }
+          (err) => console.warn("Escaneo fallido:", err)
         );
       } catch (err) {
         setError("Error iniciando cámara: " + err);
       }
     }
+  }
 
-    startCamera();
+  startCamera();
 
-    return () => {
-      html5QrCode.stop().catch(() => {});
-    };
-  }, [navigate]);
+  return () => {
+    html5QrCode.stop().catch(() => {});
+  };
+}, [navigate]);
+
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center text-center p-4">
