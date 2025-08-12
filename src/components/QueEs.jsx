@@ -47,7 +47,7 @@ export default function QueEs() {
 >
           <SwiperSlide>
   <div className="bg-white justify-items-center p-6 rounded-xl shadow hover:shadow-lg transition max-w-[220px] w-full mx-auto">
-    <QrCode className="text-purple-500 mb-4" size={40} />
+    <QrCode className="text-purple-500 justify-self-center mb-4" size={40} />
     <h3 className="font-bold mb-2 text-center">Creá un QR para tu mascota</h3>
     <p className="text-gray-600 text-sm text-center">
       Generá un código QR con la información de tu mascota para colocar en su collar.
@@ -57,7 +57,7 @@ export default function QueEs() {
 
           <SwiperSlide>
             <div className="bg-white justify-items-center p-6 rounded-xl shadow hover:shadow-lg transition max-w-[220px] w-full mx-auto">
-              <Search className="text-purple-500 mb-4" size={40} />
+              <Search className="text-purple-500 justify-self-center mb-4" size={40} />
               <h3 className="font-bold mb-2 text-center">Encontrá mascotas perdidas</h3>
               <p className="text-gray-600 text-sm text-center">
                 Buscá y ayudá a encontrar mascotas extraviadas en tu zona.
@@ -67,7 +67,7 @@ export default function QueEs() {
 
           <SwiperSlide>
             <div className="bg-white justify-items-center p-6 rounded-xl shadow hover:shadow-lg transition max-w-[220px] w-full mx-auto">
-              <Heart className="text-purple-500 mb-4" size={40} />
+              <Heart className="text-purple-500 justify-self-center mb-4" size={40} />
               <h3 className="font-bold mb-2 text-center">Adoptá con amor</h3>
               <p className="text-gray-600 text-sm text-center">
                 Conectá con personas que buscan dar en adopción a sus mascotas.
