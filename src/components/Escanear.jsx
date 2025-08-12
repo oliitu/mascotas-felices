@@ -19,12 +19,11 @@ export default function Escanear() {
     }
   };
 
-  useEffect(() => {
+ useEffect(() => {
   const html5QrCode = new Html5Qrcode("qr-reader");
 
   async function startCamera() {
     try {
-      // iOS: intentar usar facingMode directamente
       await html5QrCode.start(
         { facingMode: "environment" },
         { fps: 10, qrbox: { width: 250, height: 250 } },
@@ -35,27 +34,22 @@ export default function Escanear() {
       );
     } catch {
       try {
-        // Si falla, buscar cámaras manualmente (Android u otros)
         const devices = await Html5Qrcode.getCameras();
+        console.log("Cámaras detectadas:", devices);
+
         if (!devices.length) {
           setError("No se encontraron cámaras.");
           return;
         }
 
-        c// Buscar la cámara trasera principal evitando ultra wide
-const backCamera =
-  devices.find(({ label }) =>
-    (label.toLowerCase().includes("back") || label.toLowerCase().includes("rear")) &&
-    !label.toLowerCase().includes("wide") &&
-    !label.toLowerCase().includes("0.5") &&
-    !label.toLowerCase().includes("ultra")
-  ) ||
-  // A veces el principal es el segundo o tercero de la lista si hay varias back
-  devices.find(({ label }, idx) =>
-    idx > 0 && (label.toLowerCase().includes("back") || label.toLowerCase().includes("rear"))
-  ) ||
-  devices[0];
-
+        const backCamera = devices.find(device =>
+          (device.facingMode === "environment" ||
+           device.label.toLowerCase().includes("back") ||
+           device.label.toLowerCase().includes("rear")) &&
+          !device.label.toLowerCase().includes("wide") &&
+          !device.label.toLowerCase().includes("ultra") &&
+          !device.label.toLowerCase().includes("0.5")
+        ) || devices[0];
 
         await html5QrCode.start(
           backCamera.id,
@@ -77,6 +71,7 @@ const backCamera =
     html5QrCode.stop().catch(() => {});
   };
 }, [navigate]);
+
 
 
   return (
