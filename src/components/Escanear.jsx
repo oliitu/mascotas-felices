@@ -42,16 +42,20 @@ export default function Escanear() {
           return;
         }
 
-        const backCamera =
-          devices.find(({ label }) =>
-            (label.toLowerCase().includes("back") || label.toLowerCase().includes("rear")) &&
-            !label.toLowerCase().includes("wide") &&
-            !label.toLowerCase().includes("0.5")
-          ) ||
-          devices.find(({ label }) =>
-            label.toLowerCase().includes("back") || label.toLowerCase().includes("rear")
-          ) ||
-          devices[0];
+        c// Buscar la cámara trasera principal evitando ultra wide
+const backCamera =
+  devices.find(({ label }) =>
+    (label.toLowerCase().includes("back") || label.toLowerCase().includes("rear")) &&
+    !label.toLowerCase().includes("wide") &&
+    !label.toLowerCase().includes("0.5") &&
+    !label.toLowerCase().includes("ultra")
+  ) ||
+  // A veces el principal es el segundo o tercero de la lista si hay varias back
+  devices.find(({ label }, idx) =>
+    idx > 0 && (label.toLowerCase().includes("back") || label.toLowerCase().includes("rear"))
+  ) ||
+  devices[0];
+
 
         await html5QrCode.start(
           backCamera.id,
