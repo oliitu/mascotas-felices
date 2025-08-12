@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function Escanear() {
   const [error, setError] = useState("");
   const [devices, setDevices] = useState([]);
-  const [selectedDeviceId, setSelectedDeviceId] = useState(null);
+  const [currentCameraIndex, setCurrentCameraIndex] = useState(0);
   const [html5QrCode, setHtml5QrCode] = useState(null);
 
   const navigate = useNavigate();
@@ -33,9 +33,8 @@ export default function Escanear() {
     Html5Qrcode.getCameras()
       .then((cameras) => {
         if (cameras && cameras.length) {
-          setDevices(cameras);
-          // Intentar seleccionar automáticamente la cámara trasera no ultra wide
-          const backCamera = cameras.find(
+          // Filtrar cámaras traseras que no sean ultra wide
+          const filtered = cameras.filter(
             (device) =>
               (device.facingMode === "environment" ||
                 device.label.toLowerCase().includes("back") ||
@@ -44,7 +43,9 @@ export default function Escanear() {
               !device.label.toLowerCase().includes("ultra") &&
               !device.label.toLowerCase().includes("0.5")
           );
-          setSelectedDeviceId(backCamera ? backCamera.id : cameras[0].id);
+          // Si no hay ninguna trasera buena, tomar todas
+          setDevices(filtered.length ? filtered : cameras);
+          setCurrentCameraIndex(0);
         } else {
           setError("No se encontraron cámaras.");
         }
@@ -60,11 +61,13 @@ export default function Escanear() {
   }, []);
 
   useEffect(() => {
-    if (!html5QrCode || !selectedDeviceId) return;
+    if (!html5QrCode || devices.length === 0) return;
+
+    const currentDevice = devices[currentCameraIndex];
 
     html5QrCode
       .start(
-        selectedDeviceId,
+        currentDevice.id,
         { fps: 10, qrbox: { width: 250, height: 250 } },
         (decodedText) => {
           html5QrCode.stop().then(() => manejarNavegacion(decodedText));
@@ -78,7 +81,12 @@ export default function Escanear() {
     return () => {
       html5QrCode.stop().catch(() => {});
     };
-  }, [html5QrCode, selectedDeviceId]);
+  }, [html5QrCode, devices, currentCameraIndex]);
+
+  const toggleCamera = () => {
+    if (devices.length <= 1) return;
+    setCurrentCameraIndex((prevIndex) => (prevIndex + 1) % devices.length);
+  };
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center text-center p-4">
@@ -87,20 +95,12 @@ export default function Escanear() {
       </h1>
 
       {devices.length > 1 && (
-        <div className="mb-4">
-          <label className="mr-2 font-semibold">Elegí cámara:</label>
-          <select
-            value={selectedDeviceId}
-            onChange={(e) => setSelectedDeviceId(e.target.value)}
-            className="border border-gray-300 rounded px-2 py-1"
-          >
-            {devices.map((device) => (
-              <option key={device.id} value={device.id}>
-                {device.label || device.id}
-              </option>
-            ))}
-          </select>
-        </div>
+        <button
+          onClick={toggleCamera}
+          className="mb-4 px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition"
+        >
+          Cambiar cámara
+        </button>
       )}
 
       <div id="qr-reader" className="w-full max-w-sm" />
