@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 import { useNavigate } from "react-router-dom";
 
@@ -6,8 +6,8 @@ export default function Escanear() {
   const [error, setError] = useState("");
   const [devices, setDevices] = useState([]);
   const [currentCameraIndex, setCurrentCameraIndex] = useState(0);
-  const [html5QrCode, setHtml5QrCode] = useState(null);
 
+  const qrCodeRef = useRef(null);
   const navigate = useNavigate();
 
   const manejarNavegacion = (decodedText) => {
@@ -27,13 +27,10 @@ export default function Escanear() {
   };
 
   useEffect(() => {
-    const qrCode = new Html5Qrcode("qr-reader");
-    setHtml5QrCode(qrCode);
-
     Html5Qrcode.getCameras()
       .then((cameras) => {
         if (cameras && cameras.length) {
-          // Filtrar cámaras traseras que no sean ultra wide
+          // Filtrar cámaras traseras no ultra wide
           const filtered = cameras.filter(
             (device) =>
               (device.facingMode === "environment" ||
@@ -43,49 +40,55 @@ export default function Escanear() {
               !device.label.toLowerCase().includes("ultra") &&
               !device.label.toLowerCase().includes("0.5")
           );
-          // Si no hay ninguna trasera buena, tomar todas
           setDevices(filtered.length ? filtered : cameras);
           setCurrentCameraIndex(0);
         } else {
           setError("No se encontraron cámaras.");
         }
       })
-      .catch((err) => {
-        setError("Error al obtener cámaras: " + err);
-      });
+      .catch((err) => setError("Error al obtener cámaras: " + err));
+
+    qrCodeRef.current = new Html5Qrcode("qr-reader");
 
     return () => {
-      qrCode.stop().catch(() => {});
-      qrCode.clear();
+      if (qrCodeRef.current) {
+        qrCodeRef.current.stop().catch(() => {});
+        qrCodeRef.current.clear();
+      }
     };
   }, []);
 
   useEffect(() => {
-    if (!html5QrCode || devices.length === 0) return;
+    if (!qrCodeRef.current || devices.length === 0) return;
 
-    const currentDevice = devices[currentCameraIndex];
+    // Parar si ya está corriendo
+    qrCodeRef.current
+      .stop()
+      .catch(() => {})
+      .finally(() => {
+        const deviceId = devices[currentCameraIndex].id;
 
-    html5QrCode
-      .start(
-        currentDevice.id,
-        { fps: 10, qrbox: { width: 250, height: 250 } },
-        (decodedText) => {
-          html5QrCode.stop().then(() => manejarNavegacion(decodedText));
-        },
-        (err) => console.warn("Escaneo fallido:", err)
-      )
-      .catch((err) => {
-        setError("Error iniciando cámara: " + err);
+        qrCodeRef.current
+          .start(
+            deviceId,
+            { fps: 10, qrbox: { width: 250, height: 250 } },
+            (decodedText) => {
+              qrCodeRef.current
+                .stop()
+                .then(() => manejarNavegacion(decodedText))
+                .catch(() => manejarNavegacion(decodedText));
+            },
+            (err) => {
+              // Opcional: console.warn("Error escaneando:", err);
+            }
+          )
+          .catch((err) => setError("Error iniciando cámara: " + err));
       });
-
-    return () => {
-      html5QrCode.stop().catch(() => {});
-    };
-  }, [html5QrCode, devices, currentCameraIndex]);
+  }, [currentCameraIndex, devices]);
 
   const toggleCamera = () => {
     if (devices.length <= 1) return;
-    setCurrentCameraIndex((prevIndex) => (prevIndex + 1) % devices.length);
+    setCurrentCameraIndex((i) => (i + 1) % devices.length);
   };
 
   return (
