@@ -27,10 +27,10 @@ export default function Escanear() {
       ) {
         window.location.href = decodedText;
       } else {
-        navigate(`/ver/${decodedText}`);
+        navigate(`/ver/${decodedText}`,{ state: { origen: "escanear" } });
       }
     } catch {
-      navigate(`/ver/${decodedText}`);
+      navigate(`/ver/${decodedText}`,{ state: { origen: "escanear" } });
     }
   };
 

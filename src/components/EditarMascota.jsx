@@ -57,7 +57,7 @@ function EditarMascota() {
   if (!datos) return <p className="text-center mt-8">Cargando...</p>;
 
   return (
-    <div className="p-4 max-w-md mx-auto">
+    <div className="sm:p-4 p-8 max-w-md mx-auto">
       <h2 className="text-2xl text-purple-600 font-bold mb-4 text-center">Editar Mascota</h2>
       <form onSubmit={manejarGuardar} className="space-y-3">
   {/* Campos de texto */}

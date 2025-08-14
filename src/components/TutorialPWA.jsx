@@ -3,7 +3,7 @@ export default function TutorialPWA() {
 
   return (
     <div className="p-6 max-w-3xl mx-auto bg-white rounded-lg shadow-md">
-      <h1 className="text-3xl font-bold text-purple-600 mb-6">
+      <h1 className="text-3xl sm:mt-0 mt-5 font-bold text-purple-600 mb-6">
         Cómo instalar la app en tu dispositivo 📲
       </h1>
 

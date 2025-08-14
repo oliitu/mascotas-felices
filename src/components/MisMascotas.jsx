@@ -37,8 +37,8 @@ function MisMascotas() {
   };
 
   return (
-    <div className="p-4 max-w-2xl mx-auto justify-items-center">
-      <h2 className="text-3xl text-purple-600 font-bold mb-6 text-center">Mis Mascotas</h2>
+    <div className="p-4  max-w-2xl mx-auto justify-items-center">
+      <h2 className="text-3xl text-purple-600 mt-5 sm:mt-0 font-bold mb-6 text-center">Mis Mascotas</h2>
       {mascotas.length === 0 ? (
         <p className="text-center">Todavía no cargaste mascotas.</p>
       ) : (

@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { collection, query, where, getDocs} from "firebase/firestore";
 import { db } from "../../firebase";
 import  {Mars, Venus, Dog, Cat} from "lucide-react"; 
+import { useNavigate } from "react-router-dom";
 
 function MascotasEnAdopcion() {
+  const navigate= useNavigate()
   const [mascotas, setMascotas] = useState([]);
   const [filtroEspecie, setFiltroEspecie] = useState("");
 
@@ -60,6 +62,7 @@ const mascotasFiltradas = filtroEspecie
   {mascotasFiltradas.map((mascota) => (
     <div
       key={mascota.id}
+      onClick={() => navigate(`/ver/${mascota.id}`, { state: { origen: "adopcion" } })} 
       className="border border-gray-300 rounded-lg shadow-md p-6 bg-white hover:shadow-lg transition-shadow flex flex-col items-center text-center"
     >
       <h3 className="text-2xl font-semibold mb-3">{mascota.nombre}</h3>
@@ -90,7 +93,7 @@ const mascotasFiltradas = filtroEspecie
       <p className="text-gray-800 text-base mt-2 mb-4">📞 {mascota.telefono}</p>
 
       <a
-        href={`https://wa.me/${mascota.telefono}?text=Hola, vi que tu mascota ${mascota.nombre} está en adopción, estoy interesado.`}
+         href={`https://wa.me/${mascota.telefono}?text=Hola, vi que tu mascota ${mascota.nombre} está en adopción, estoy interesado.`}
         target="_blank"
         rel="noopener noreferrer"
         className="inline-block w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-2 rounded transition"

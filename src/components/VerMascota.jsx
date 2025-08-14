@@ -1,11 +1,13 @@
-import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useEffect, useState } from "react";
 import { Mars, Venus, MapPin, Phone, PawPrint } from "lucide-react";
+import { useParams, useLocation } from "react-router-dom";
 
 function VerMascota() {
   const { id } = useParams();
+  const location = useLocation();
+  const origen = location.state?.origen || "escanear";
   const [mascota, setMascota] = useState(null);
 
   useEffect(() => {
@@ -21,7 +23,15 @@ function VerMascota() {
 
   if (!mascota) return <p className="text-center mt-10">Cargando perfil de mascota...</p>;
 
-  const mensaje = `Hola, encontré a ${mascota.nombre}. Vi su perfil en Mascotas Felices.`;
+  let mensaje = "";
+  if (origen === "adopcion") {
+    mensaje = `Hola, vi que tu mascota ${mascota.nombre} está en adopción, estoy interesado.`;
+  } else if (origen === "perdidas") {
+    mensaje = `Hola, vi que tu mascota ${mascota.nombre} está perdida. ¿Puedo ayudarte?`;
+  } else {
+    mensaje = `Hola, encontré a ${mascota.nombre}. Vi su perfil en Mascotas Felices.`;
+  }
+
   const telefono = mascota.telefono.replace(/\D/g, "");
   const linkWhatsapp = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
 
