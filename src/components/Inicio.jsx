@@ -2,21 +2,23 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Info, PawPrint, Download, Users } from "lucide-react";
 import Toast from "./Toast";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebase";
 
 export default function Home() {
+  const [user] = useAuthState(auth);
   const navigate = useNavigate();
   const [toastMessage, setToastMessage] = useState("");
 
   const handleMisMascotas = () => {
-    const user = localStorage.getItem("user"); // O la lógica real de tu auth
     if (user) {
       navigate("/mis-mascotas");
     } else {
       setToastMessage("Tenés que iniciar sesión");
-      setTimeout(() => setToastMessage(""), 3000); // Oculta el toast después de 3s
-      navigate("/"); // Si querés que se quede en inicio, no pongas esto
+      setTimeout(() => setToastMessage(""), 3000);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-100 to-purple-200 text-gray-800">
