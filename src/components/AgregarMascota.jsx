@@ -168,7 +168,7 @@ function AgregarMascota() {
   />
 </div>
 <div className="w-full flex justify-center">
-        <div className="flex items-center">
+        <div className="flex gap-10 items-center">
           <div className="mr-3 align-middle">
           {/* Especie */}
         <div className="mb-5">
@@ -230,7 +230,8 @@ function AgregarMascota() {
               <span className="text-xs">Hembra</span>
             </button>
           </div>
-        </div></div>
+        </div>
+        </div>
         <div className="w-full flex justify-center">
   <label className="flex flex-col items-center gap-2 rounded-lg border p-4 cursor-pointer bg-white hover:bg-purple-50">
     <ImagePlus className="h-10 w-10 text-purple-500" />
