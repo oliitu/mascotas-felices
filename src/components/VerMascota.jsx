@@ -1,8 +1,9 @@
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useEffect, useState } from "react";
-import { Mars, Venus, MapPin, Phone, PawPrint } from "lucide-react";
+import { Mars, Venus, Heart, Phone, PawPrint } from "lucide-react";
 import { useParams, useLocation } from "react-router-dom";
+
 
 function VerMascota() {
   const { id } = useParams();
@@ -80,32 +81,26 @@ function VerMascota() {
   <h2 className="text-lg font-semibold mb-2">Información adicional</h2>
   <ul className="space-y-3">
     <li className="flex items-start bg-purple-50 border border-purple-200 p-3 rounded-lg shadow">
-      <PawPrint className="w-4 h-4 text-purple-500 mt-1" />
-      <div className="ml-2">
+      <PawPrint className="w-6 h-auto text-purple-500 ml-1 mt-3" />
+      <div className="ml-5">
         <span className="text-[#897399]">Raza</span>
         <div className="text-gray-800">{mascota.raza}</div>
       </div>
     </li>
 
-    <li className="flex items-start bg-purple-50 border border-purple-200 p-3 rounded-lg shadow">
-      <MapPin className="w-4 h-4 text-purple-500 mt-1" />
-      <div className="ml-2">
-        <span className="text-[#897399]">Ciudad</span>
-        <div className="text-gray-800">{mascota.ciudad}</div>
-      </div>
-    </li>
+   
 
     <li className="flex items-start bg-purple-50 border border-purple-200 p-3 rounded-lg shadow">
-      <PawPrint className="w-4 h-4 text-purple-500 mt-1" />
-      <div className="ml-2">
+      <Heart className="w-6 h-auto text-purple-500 ml-1 mt-3" />
+      <div className="ml-5">
         <span className="text-[#897399]">Estado</span>
         <div className="text-gray-800">{mascota.estado}</div>
       </div>
     </li>
 
     <li className="flex items-start bg-purple-50 border border-purple-200 p-3 rounded-lg shadow">
-      <Phone className="w-4 h-4 text-purple-500 mt-1" />
-      <div className="ml-2">
+      <Phone className="w-6 h-auto text-purple-500 ml-1 mt-3" />
+      <div className="ml-5">
         <span className="text-[#897399]">Teléfono</span>
         <div className="text-gray-800">{mascota.telefono}</div>
       </div>

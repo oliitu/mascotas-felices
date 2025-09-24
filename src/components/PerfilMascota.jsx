@@ -39,7 +39,7 @@ function PerfilMascota() {
 
   return (
     <div className="p-4 max-w-md mx-auto bg-white rounded-lg shadow">
-      <h1 className="text-2xl font-bold mb-4">{mascota.nombre}</h1>
+      <h1 className="text-2xl text-center font-bold mb-4">{mascota.nombre} fue registrado correctamente!</h1>
    {mascota.imagen && (
   <img
   src={mascota.imagen}
@@ -49,22 +49,6 @@ function PerfilMascota() {
 
 )}
 
-      <p>{mascota.descripcion}</p>
-      {mascota.genero && (
-  <p className="flex items-center gap-2">
-    {" "}
-    {mascota.genero === "macho" ? (
-      <span className="flex items-center text-blue-600"><Mars className="w-4 h-4 mr-1" /> </span>
-    ) : (
-      <span className="flex items-center text-pink-600"><Venus className="w-4 h-4 mr-1" /> </span>
-    )}
-  </p>
-)}
-      <p><strong>Raza:</strong> {mascota.raza}</p>
-      <p><strong>Edad:</strong> {mascota.edad}</p>
-      <p><strong>Ciudad:</strong> {mascota.ciudad}</p>
-      <p><strong>Teléfono:</strong> {mascota.telefono}</p>
-      <p>{mascota.estado}</p>
 
       <div className="mt-6 text-center" ref={qrRef}>
   <p className="mb-2 font-semibold">Escaneá este código QR para ver el perfil:</p>

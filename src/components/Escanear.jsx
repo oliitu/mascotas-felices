@@ -55,19 +55,16 @@ export default function Escanear() {
             }
           );
 
-          // Obtener cámaras para botón cambio (opcional)
           const cams = await Html5Qrcode.getCameras();
           setDevices(cams);
           setCurrentCameraIndex(0);
         } else if (esAndroid()) {
-          // Android: obtener cámaras y elegir la trasera buena
           const cams = await Html5Qrcode.getCameras();
           if (!cams.length) {
             setError("No se encontraron cámaras.");
             return;
           }
 
-          // Filtrar traseras no ultra wide
           const traseras = cams.filter(
             (device) =>
               (device.facingMode === "environment" ||
@@ -108,7 +105,7 @@ export default function Escanear() {
                 .catch(() => manejarNavegacion(decodedText));
             },
             (err) => {
-              console.warn("Error escaneando:", err);
+              console.warn("Error escaneando:");
             }
           );
 
@@ -117,7 +114,7 @@ export default function Escanear() {
           setCurrentCameraIndex(0);
         }
       } catch (err) {
-        setError("Error iniciando cámara: " + err);
+        setError("Error iniciando cámara: ");
       }
     }
 
