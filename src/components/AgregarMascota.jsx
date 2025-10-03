@@ -259,6 +259,7 @@ function AgregarMascota() {
           <option value="">Seleccionar estado</option>
           <option value="en adopcion">En adopción</option>
           <option value="perdida">Perdida</option>
+          <option value="-">-</option>
         </select>
 
         {/* Botón */}
