@@ -10,7 +10,6 @@ import {
   MapPin,
   Phone,
   ImagePlus,
-  PawPrint,
   Heart,
   Mars,
   Venus,
