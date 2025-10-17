@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
@@ -21,7 +21,8 @@ import TutorialPWA from "./components/TutorialPWA";
 import QueEs from "./components/QueEs";
 import QuienesSomos from "./components/QuienesSomos";
 import BackButton from "./components/BackButton";
-
+import ChatList from "./components/ChatList";
+import ChatPage from "./components/ChatPage";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -33,8 +34,11 @@ function App() {
 
   return (
     <Router>
-      <div className="pb-16"> 
-       <div className="mt-1 fixed"><BackButton/></div>
+      <div className="mt-1 z-100 fixed">
+          <BackButton />
+        </div>
+      <div className="pb-16">
+        
 
         <Routes>
           <Route path="/escanear" element={<Escanear />} />
@@ -48,27 +52,59 @@ function App() {
           <Route path="/mascota/:id" element={<PerfilMascota />} />
           <Route path="/ver/:id" element={<VerMascota />} />
           <Route path="/perdidas" element={<MascotasPerdidas />} />
-          <Route path="/registrar-mascota" element={
-            <RutaPrivada>
-              <AgregarMascota />
-            </RutaPrivada>
-          } />
-          <Route path="/mis-mascotas" element={
-            <RutaPrivada>
-              <MisMascotas />
-            </RutaPrivada>
-          } />
-          <Route path="/editar/:id" element={
-            <RutaPrivada>
-              <EditarMascota />
-            </RutaPrivada>
-          } />
-          <Route path="/perfil" element={
-  <RutaPrivada>
-    <Perfil />
-  </RutaPrivada>
-} />
+
+          <Route
+            path="/registrar-mascota"
+            element={
+              <RutaPrivada>
+                <AgregarMascota />
+              </RutaPrivada>
+            }
+          />
+          <Route
+            path="/mis-mascotas"
+            element={
+              <RutaPrivada>
+                <MisMascotas />
+              </RutaPrivada>
+            }
+          />
+          <Route
+            path="/editar/:id"
+            element={
+              <RutaPrivada>
+                <EditarMascota />
+              </RutaPrivada>
+            }
+          />
+          <Route
+            path="/perfil"
+            element={
+              <RutaPrivada>
+                <Perfil />
+              </RutaPrivada>
+            }
+          />
+
+          {/* ✅ Pasamos el user.uid a los componentes del chat */}
+          <Route
+            path="/chats"
+            element={
+              <RutaPrivada>
+                <ChatList currentUserId={user?.uid} />
+              </RutaPrivada>
+            }
+          />
+          <Route
+            path="/chat/:chatId"
+            element={
+              <RutaPrivada>
+                <ChatPage currentUserId={user?.uid} />
+              </RutaPrivada>
+            }
+          />
         </Routes>
+
         <BottomNav />
       </div>
     </Router>

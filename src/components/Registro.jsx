@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { useNavigate } from "react-router-dom";
+import { setDoc, doc } from "firebase/firestore";
 
 function Registro() {
   const [nombre, setNombre] = useState("");
@@ -14,9 +15,17 @@ function Registro() {
     try {
       // Crear usuario
       const userCredential = await createUserWithEmailAndPassword(auth, email, clave);
+      const user = userCredential.user; // 🔑 Necesario para Firestore
 
-      // Actualizar displayName
-      await updateProfile(userCredential.user, {
+      // Guardar info del usuario en Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        name: nombre,
+        email: user.email,
+        createdAt: new Date()
+      });
+
+      // Actualizar displayName en Firebase Auth
+      await updateProfile(user, {
         displayName: nombre
       });
 
@@ -29,11 +38,10 @@ function Registro() {
   };
 
   return (
-        <div className="min-h-screen flex items-center justify-center pb-20">
-
+    <div className="min-h-screen flex items-center justify-center pb-20">
       <form onSubmit={manejarRegistro} className="p-4 max-w-sm mx-auto text-center">
         <h2 className="text-xl font-bold mb-4">Registrarse</h2>
-        
+
         <input
           type="text"
           placeholder="Nombre"
@@ -45,7 +53,7 @@ function Registro() {
         <input
           type="email"
           placeholder="Correo electrónico"
-          className="border bg-white  p-2 w-full mb-2"
+          className="border bg-white p-2 w-full mb-2"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />

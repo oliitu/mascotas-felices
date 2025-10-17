@@ -151,9 +151,9 @@ function AgregarMascota() {
             name="telefono"
             value={datos.telefono}
             onChange={manejarCambio}
-            placeholder="Teléfono"
+            placeholder="Teléfono (opcional)"
             className="w-full outline-none"
-            required
+            
           />
         </div>
         <div className="flex items-center border rounded p-2 bg-white">

@@ -7,7 +7,7 @@ export default function BackButton() {
   return (
     <button
       onClick={() => navigate(-1)}
-      className=" text-purple-400 px-4 py-2 rounded-lg "
+      className=" text-purple-400 mx-4 z-100 my-2 rounded-lg "
     >
       <ChevronLeft/>
     </button>

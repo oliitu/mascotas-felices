@@ -1,7 +1,7 @@
 // components/BottomNav.jsx
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
-import  {Heart, Dog, User, QrCode, HomeIcon} from "lucide-react";
+import  {Heart, MessageSquare, User, QrCode, HomeIcon} from "lucide-react";
 
 export default function BottomNav() {
   const [user] = useAuthState(auth);
@@ -15,21 +15,25 @@ export default function BottomNav() {
           Inicio
         </a>
         
-        <a href="/perdidas" className="flex flex-col text-xs sm:text-base items-center">
+        {/* <a href="/perdidas" className="flex flex-col text-xs sm:text-base items-center">
           <Dog/>
           Perdidas
+        </a> */}
+        <a href="/adopcion" className="flex flex-col text-xs sm:text-base items-center">
+          <Heart/>
+          Adoptar
         </a>
-        
+
         <a
           href="/escanear"
-          className="bg-purple-500 hover:bg-purple-600 text-white rounded-full p-4 -mt-10 shadow-lg transition transform hover:scale-105"
+          className="bg-purple-500 hover:bg-purple-600 text-white rounded-full p-4 -mt-5 sm:-mt-10 shadow-lg transition transform hover:scale-105"
         >
           <QrCode/>
         </a>
         
-        <a href="/adopcion" className="flex flex-col text-xs sm:text-base items-center">
-          <Heart/>
-          Adoptar
+        <a href="/chats" className="flex flex-col text-xs sm:text-base items-center">
+          <MessageSquare/>
+          Chats
         </a>
 
         <a href={user ? "/perfil" : "/login"} className="flex text-xs sm:text-base flex-col items-center">

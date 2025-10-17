@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { collection, query, where, getDocs} from "firebase/firestore";
-import { db } from "../../firebase";
+import { db, auth } from "../../firebase";
 import  {Mars, Venus, Dog, Cat} from "lucide-react"; 
 import { useNavigate } from "react-router-dom";
+import ChatButton from "./ChatButton";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 function MascotasEnAdopcion() {
   const navigate= useNavigate()
   const [mascotas, setMascotas] = useState([]);
   const [filtroEspecie, setFiltroEspecie] = useState("");
+  const [usuario] = useAuthState(auth);
 
   useEffect(() => {
     const obtenerMascotasPerdidas = async () => {
@@ -92,14 +95,14 @@ const mascotasFiltradas = filtroEspecie
       <p className="text-gray-700 text-base mb-1">{mascota.ciudad}</p>
       <p className="text-gray-800 text-base mt-2 mb-4">📞 {mascota.telefono}</p>
 
-      <a
-         href={`https://wa.me/${mascota.telefono}?text=Hola, vi que tu mascota ${mascota.nombre} está en adopción, estoy interesado.`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-block w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-2 rounded transition"
-      >
-        WhatsApp
-      </a>
+      {usuario && usuario.uid !== mascota.userId && (
+              <div className="text-center">
+                <ChatButton
+                  currentUserId={usuario.uid}
+                  ownerId={mascota.userId}
+                />
+              </div>
+            )}
     </div>
   ))}
 </div>

@@ -1,28 +1,31 @@
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db, auth } from "../../firebase";
 import { useEffect, useState } from "react";
 import { Mars, Venus, Heart, Phone, PawPrint } from "lucide-react";
 import { useParams, useLocation } from "react-router-dom";
-
+import { useAuthState } from "react-firebase-hooks/auth";
+import ChatButton from "./ChatButton";
 
 function VerMascota() {
   const { id } = useParams();
   const location = useLocation();
   const origen = location.state?.origen || "escanear";
   const [mascota, setMascota] = useState(null);
+  const [usuario] = useAuthState(auth);
 
   useEffect(() => {
     const fetchData = async () => {
       const docRef = doc(db, "mascotas", id);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        setMascota(docSnap.data());
+        setMascota({ id: docSnap.id, ...docSnap.data() });
       }
     };
     fetchData();
   }, [id]);
 
-  if (!mascota) return <p className="text-center mt-10">Cargando perfil de mascota...</p>;
+  if (!mascota)
+    return <p className="text-center mt-10">Cargando perfil de mascota...</p>;
 
   let mensaje = "";
   if (origen === "adopcion") {
@@ -34,7 +37,9 @@ function VerMascota() {
   }
 
   const telefono = mascota.telefono.replace(/\D/g, "");
-  const linkWhatsapp = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
+  const linkWhatsapp = `https://wa.me/${telefono}?text=${encodeURIComponent(
+    mensaje
+  )}`;
 
   return (
     <div className="min-h-screen bg-[#f8ebff] p-4 max-w-md mx-auto rounded-lg shadow space-y-6">
@@ -77,49 +82,44 @@ function VerMascota() {
       </div>
 
       {/* Información adicional */}
-<div>
-  <h2 className="text-lg font-semibold mb-2">Información adicional</h2>
-  <ul className="space-y-3">
-    <li className="flex items-start bg-purple-50 border border-purple-200 p-3 rounded-lg shadow">
-      <PawPrint className="w-6 h-auto text-purple-500 ml-1 mt-3" />
-      <div className="ml-5">
-        <span className="text-[#897399]">Raza</span>
-        <div className="text-gray-800">{mascota.raza}</div>
+      <div>
+        <h2 className="text-lg font-semibold mb-2">Información adicional</h2>
+        <ul className="space-y-3">
+          <li className="flex items-start bg-purple-50 border border-purple-200 p-3 rounded-lg shadow">
+            <PawPrint className="w-6 h-auto text-purple-500 ml-1 mt-3" />
+            <div className="ml-5">
+              <span className="text-[#897399]">Raza</span>
+              <div className="text-gray-800">{mascota.raza}</div>
+            </div>
+          </li>
+
+          <li className="flex items-start bg-purple-50 border border-purple-200 p-3 rounded-lg shadow">
+            <Heart className="w-6 h-auto text-purple-500 ml-1 mt-3" />
+            <div className="ml-5">
+              <span className="text-[#897399]">Estado</span>
+              <div className="text-gray-800">{mascota.estado}</div>
+            </div>
+          </li>
+
+          <li className="flex items-start bg-purple-50 border border-purple-200 p-3 rounded-lg shadow">
+            <Phone className="w-6 h-auto text-purple-500 ml-1 mt-3" />
+            <div className="ml-5">
+              <span className="text-[#897399]">Teléfono</span>
+              <div className="text-gray-800">{mascota.telefono}</div>
+            </div>
+          </li>
+        </ul>
       </div>
-    </li>
 
-   
-
-    <li className="flex items-start bg-purple-50 border border-purple-200 p-3 rounded-lg shadow">
-      <Heart className="w-6 h-auto text-purple-500 ml-1 mt-3" />
-      <div className="ml-5">
-        <span className="text-[#897399]">Estado</span>
-        <div className="text-gray-800">{mascota.estado}</div>
-      </div>
-    </li>
-
-    <li className="flex items-start bg-purple-50 border border-purple-200 p-3 rounded-lg shadow">
-      <Phone className="w-6 h-auto text-purple-500 ml-1 mt-3" />
-      <div className="ml-5">
-        <span className="text-[#897399]">Teléfono</span>
-        <div className="text-gray-800">{mascota.telefono}</div>
-      </div>
-    </li>
-  </ul>
-</div>
-
-
-      {/* Botón de WhatsApp */}
-      <div className="text-center">
-        <a
-          href={linkWhatsapp}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block bg-green-500 text-white px-6 py-3 rounded-lg shadow hover:bg-green-600 transition"
-        >
-          Contactar por WhatsApp
-        </a>
-      </div>
+      {/* Botón de Chat (solo si no es el dueño) */}
+      {usuario && usuario.uid !== mascota.userId && (
+        <div className="text-center">
+          <ChatButton
+            currentUserId={usuario.uid}
+            ownerId={mascota.userId}
+          />
+        </div>
+      )}
     </div>
   );
 }
