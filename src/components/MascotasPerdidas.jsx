@@ -96,7 +96,12 @@ const mascotasFiltradas = filtroEspecie
       )}
 
       <p className="text-gray-700 text-base mb-1">{mascota.ciudad}</p>
-      <p className="text-gray-800 text-base mt-2 mb-4">📞 {mascota.telefono}</p>
+      {mascota.telefono && (
+  <p className="text-gray-800 text-base mt-2 mb-4">
+    📞 {mascota.telefono}
+  </p>
+)}
+
 
       {usuario && usuario.uid !== mascota.userId && (
                     <div className="text-center">

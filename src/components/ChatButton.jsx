@@ -5,7 +5,7 @@ import { MessageCircle } from "lucide-react";
 
 export default function ChatButton({ currentUserId, ownerId }) {
   const navigate = useNavigate();
-  
+
   const handleChat = async () => {
     if (!currentUserId || !ownerId || currentUserId === ownerId) return;
 
@@ -49,11 +49,15 @@ export default function ChatButton({ currentUserId, ownerId }) {
 
   return (
     <button
-      onClick={handleChat}
-      className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition"
-    >
-      <MessageCircle size={20} />
-      <span>Iniciar chat</span>
-    </button>
+  onClick={(e) => {
+    e.stopPropagation(); // 💥 evita que se abra el perfil por accidente
+    handleChat();
+  }}
+  className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition"
+>
+  <MessageCircle size={20} />
+  <span>Iniciar chat</span>
+</button>
+
   );
 }

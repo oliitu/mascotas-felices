@@ -6,24 +6,10 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 
 export default function Home() {
-  const [user] = useAuthState(auth);
   const navigate = useNavigate();
-  const [toastMessage, setToastMessage] = useState("");
-
-  const handleMisMascotas = () => {
-    if (user) {
-      navigate("/mis-mascotas");
-    } else {
-      setToastMessage("Tenés que iniciar sesión");
-      setTimeout(() => setToastMessage(""), 3000);
-    }
-  };
-
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-100 to-purple-200 text-gray-800">
-      
-
       {/* Hero Section */}
       <section
         id="inicio"
@@ -44,10 +30,10 @@ export default function Home() {
         {/* Botones */}
         <div className="flex flex-col gap-3 w-full max-w-xs">
           <button
-            onClick={handleMisMascotas}
+            onClick={() => navigate("/perdidas")}
             className="flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-full shadow-md transition"
           >
-            <PawPrint size={20} /> Ver mis mascotas
+            <PawPrint size={20} /> Mascotas perdidas
           </button>
           <button
             onClick={() => navigate("/tutorial")}
@@ -69,7 +55,6 @@ export default function Home() {
           </button>
         </div>
       </section>
-      <Toast message={toastMessage} />
     </div>
   );
 }

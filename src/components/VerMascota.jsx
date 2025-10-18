@@ -27,19 +27,19 @@ function VerMascota() {
   if (!mascota)
     return <p className="text-center mt-10">Cargando perfil de mascota...</p>;
 
-  let mensaje = "";
-  if (origen === "adopcion") {
-    mensaje = `Hola, vi que tu mascota ${mascota.nombre} está en adopción, estoy interesado.`;
-  } else if (origen === "perdidas") {
-    mensaje = `Hola, vi que tu mascota ${mascota.nombre} está perdida. ¿Puedo ayudarte?`;
-  } else {
-    mensaje = `Hola, encontré a ${mascota.nombre}. Vi su perfil en Mascotas Felices.`;
-  }
+  // let mensaje = "";
+  // if (origen === "adopcion") {
+  //   mensaje = `Hola, vi que tu mascota ${mascota.nombre} está en adopción, estoy interesado.`;
+  // } else if (origen === "perdidas") {
+  //   mensaje = `Hola, vi que tu mascota ${mascota.nombre} está perdida. ¿Puedo ayudarte?`;
+  // } else {
+  //   mensaje = `Hola, encontré a ${mascota.nombre}. Vi su perfil en Mascotas Felices.`;
+  // }
 
-  const telefono = mascota.telefono.replace(/\D/g, "");
-  const linkWhatsapp = `https://wa.me/${telefono}?text=${encodeURIComponent(
-    mensaje
-  )}`;
+  // const telefono = mascota.telefono.replace(/\D/g, "");
+  // const linkWhatsapp = `https://wa.me/${telefono}?text=${encodeURIComponent(
+  //   mensaje
+  // )}`;
 
   return (
     <div className="min-h-screen bg-[#f8ebff] p-4 max-w-md mx-auto rounded-lg shadow space-y-6">
@@ -110,17 +110,16 @@ function VerMascota() {
           </li>
         </ul>
       </div>
-
-      {/* Botón de Chat (solo si no es el dueño) */}
-      {usuario && usuario.uid !== mascota.userId && (
-        <div className="text-center">
+          {usuario && usuario.uid !== mascota.userId && (
+        <div className=" items-center flex flex-col text-center">
           <ChatButton
             currentUserId={usuario.uid}
             ownerId={mascota.userId}
           />
         </div>
-      )}
-    </div>
+      )}</div>
+      
+   
   );
 }
 
