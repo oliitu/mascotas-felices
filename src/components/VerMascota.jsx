@@ -100,14 +100,14 @@ function VerMascota() {
               <div className="text-gray-800">{mascota.estado}</div>
             </div>
           </li>
-
+          {mascota.telefono && (
           <li className="flex items-start bg-purple-50 border border-purple-200 p-3 rounded-lg shadow">
             <Phone className="w-6 h-auto text-purple-500 ml-1 mt-3" />
             <div className="ml-5">
               <span className="text-[#897399]">Teléfono</span>
               <div className="text-gray-800">{mascota.telefono}</div>
             </div>
-          </li>
+          </li>)}
         </ul>
       </div>
           {usuario && usuario.uid !== mascota.userId && (
