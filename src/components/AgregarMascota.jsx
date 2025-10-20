@@ -45,7 +45,7 @@ function AgregarMascota() {
     const file = e.target.files[0];
     if (file) {
       setImagen(file);
-      setPreview(URL.createObjectURL(file)); // vista previa local
+      setPreview(URL.createObjectURL(file)); 
     }
   };
 

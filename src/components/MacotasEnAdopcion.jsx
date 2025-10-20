@@ -63,53 +63,62 @@ const mascotasFiltradas = filtroEspecie
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
   {mascotasFiltradas.map((mascota) => (
-    <div
-      key={mascota.id}
-      onClick={() => navigate(`/ver/${mascota.id}`, { state: { origen: "adopcion" } })} 
-      className="border border-gray-300 rounded-lg shadow-md p-6 bg-white hover:shadow-lg transition-shadow flex flex-col items-center text-center"
-    >
-      <h3 className="text-2xl font-semibold mb-3">{mascota.nombre}</h3>
+  <div
+    key={mascota.id}
+    onClick={() => navigate(`/ver/${mascota.id}`, { state: { origen: "adopcion" } })}
+    className="border border-gray-300 rounded-lg shadow-md p-6 bg-white hover:shadow-lg transition-shadow flex flex-col items-center text-center"
+  >
+    <h3 className="text-2xl font-semibold mb-3">{mascota.nombre}</h3>
 
-      {mascota.imagen && (
-        <img
-          src={mascota.imagen}
-          alt={mascota.nombre}
-          className="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-full mb-4"
-        />
+    {mascota.imagen && (
+      <img
+        src={mascota.imagen}
+        alt={mascota.nombre}
+        className="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-full mb-4"
+      />
+    )}
+
+    {mascota.genero && (
+      <p className="flex items-center justify-center gap-2 mb-2 text-lg">
+        {mascota.genero === "macho" ? (
+          <span className="text-blue-600 flex items-center gap-1">
+            <Mars className="w-5 h-5" /> Macho
+          </span>
+        ) : (
+          <span className="text-pink-600 flex items-center gap-1">
+            <Venus className="w-5 h-5" /> Hembra
+          </span>
+        )}
+      </p>
+    )}
+
+    <p className="text-gray-700 text-base mb-1">{mascota.ciudad}</p>
+
+    {mascota.telefono && (
+      <p className="text-gray-800 text-base mt-2 mb-4">📞 {mascota.telefono}</p>
+    )}
+
+    {/* 👇 Mostrar según el estado del usuario */}
+    <div className="text-center">
+      {usuario ? (
+        usuario.uid !== mascota.userId && (
+          <ChatButton currentUserId={usuario.uid} ownerId={mascota.userId} />
+        )
+      ) : (
+        <button
+          onClick={(e) => {
+            e.stopPropagation(); // evita abrir el perfil
+            navigate("/registro");
+          }}
+          className="flex items-center justify-center gap-2 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition"
+        >
+          Registrate para chatear
+        </button>
       )}
-
-      {mascota.genero && (
-        <p className="flex items-center justify-center gap-2 mb-2 text-lg">
-          {mascota.genero === "macho" ? (
-            <span className="text-blue-600 flex items-center gap-1">
-              <Mars className="w-5 h-5" /> Macho
-            </span>
-          ) : (
-            <span className="text-pink-600 flex items-center gap-1">
-              <Venus className="w-5 h-5" /> Hembra
-            </span>
-          )}
-        </p>
-      )}
-
-      <p className="text-gray-700 text-base mb-1">{mascota.ciudad}</p>
-      {mascota.telefono && (
-  <p className="text-gray-800 text-base mt-2 mb-4">
-    📞 {mascota.telefono}
-  </p>
-)}
-
-
-      {usuario && usuario.uid !== mascota.userId && (
-              <div className="text-center">
-                <ChatButton
-                  currentUserId={usuario.uid}
-                  ownerId={mascota.userId}
-                />
-              </div>
-            )}
     </div>
-  ))}
+  </div>
+))}
+
 </div>
 
       )}
