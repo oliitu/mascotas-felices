@@ -36,7 +36,7 @@ export default function BottomNav() {
           Chats
         </a>
 
-        <a href={user ? "/perfil" : "/login"} className="flex text-xs sm:text-base flex-col items-center">
+        <a href={user ? "/miperfil" : "/login"} className="flex text-xs sm:text-base flex-col items-center">
           <User/>
           {user ? "Perfil" : "Login"}
         </a>

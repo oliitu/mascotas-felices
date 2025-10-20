@@ -14,7 +14,7 @@ import MascotasPerdidas from "./components/MascotasPerdidas";
 import Home from "./components/Inicio";
 import BottomNav from "./components/BottomNav";
 import Escanear from "./components/Escanear";
-import Perfil from "./components/Perfil";
+import Perfil from "./components/MiPerfil";
 import VerMascota from "./components/VerMascota";
 import MascotasEnAdopcion from "./components/MacotasEnAdopcion";
 import TutorialPWA from "./components/TutorialPWA";
@@ -23,6 +23,7 @@ import QuienesSomos from "./components/QuienesSomos";
 import BackButton from "./components/BackButton";
 import ChatList from "./components/ChatList";
 import ChatPage from "./components/ChatPage";
+import PerfilUsuario from "./components/PerfilUsuario";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -78,7 +79,7 @@ function App() {
             }
           />
           <Route
-            path="/perfil"
+            path="/miperfil"
             element={
               <RutaPrivada>
                 <Perfil />
@@ -103,6 +104,7 @@ function App() {
               </RutaPrivada>
             }
           />
+          <Route path="/perfil/:id" element={<PerfilUsuario />} />
         </Routes>
 
         <BottomNav />

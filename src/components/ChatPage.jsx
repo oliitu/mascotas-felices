@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   collection,
   addDoc,
@@ -9,7 +9,6 @@ import {
   serverTimestamp,
   doc,
   getDoc,
-  updateDoc,
 } from "firebase/firestore";
 import { Send, UserCircle } from "lucide-react";
 import { auth, db } from "../../firebase";
@@ -17,19 +16,20 @@ import { onAuthStateChanged } from "firebase/auth";
 
 export default function ChatPage() {
   const { chatId } = useParams();
+  const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
   const [chatUser, setChatUser] = useState(null);
   const bottomRef = useRef(null);
 
-  // Detectar usuario logueado
+  // Usuario actual
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => setCurrentUser(user));
     return () => unsubscribe();
   }, []);
 
-  // Traer mensajes del chat en tiempo real
+  // Escuchar mensajes
   useEffect(() => {
     if (!chatId) return;
     const q = query(collection(db, "chats", chatId, "messages"), orderBy("createdAt"));
@@ -53,13 +53,14 @@ export default function ChatPage() {
         if (otherUserId) {
           const userRef = doc(db, "users", otherUserId);
           const userSnap = await getDoc(userRef);
-          if (userSnap.exists()) setChatUser(userSnap.data());
+          if (userSnap.exists()) setChatUser({ id: otherUserId, ...userSnap.data() });
         }
       }
     };
     getChatUser();
   }, [chatId, currentUser]);
 
+  // Enviar mensaje
   const sendMessage = async (e) => {
     e.preventDefault();
     if (!newMessage.trim() || !currentUser) return;
@@ -78,8 +79,12 @@ export default function ChatPage() {
   };
 
   return (
-    <section> 
-        <div className="flex items-center gap-3 w-screen p-4 border-b fixed bg-purple-600 text-white">
+    <section>
+      {/* Header del chat */}
+      <div
+        onClick={() => chatUser && navigate(`/perfil/${chatUser.id}`)} // 👈 Ir al perfil
+        className="flex items-center gap-3 w-screen p-4 border-b fixed bg-purple-600 text-white cursor-pointer"
+      >
         <UserCircle size={40} />
         <div>
           <p className="font-semibold">
@@ -89,51 +94,50 @@ export default function ChatPage() {
         </div>
       </div>
 
-        <div className="flex flex-col h-screen pt-15 max-w-screen mx-auto bg-white rounded-lg shadow">
-      
-      {/* Mensajes */}
-      <div className="flex-1 mt-20 overflow-y-auto p-4 space-y-3">
-        {messages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`flex ${
-              msg.senderId === currentUser?.uid ? "justify-end" : "justify-start"
-            }`}
-          >
+      {/* Cuerpo del chat */}
+      <div className="flex flex-col h-screen pt-20 bg-white">
+        <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          {messages.map((msg) => (
             <div
-              className={`max-w-xs px-4 py-2 rounded-2xl text-sm ${
-                msg.senderId === currentUser?.uid
-                  ? "bg-purple-500 text-white rounded-br-none"
-                  : "bg-gray-100 text-gray-800 rounded-bl-none"
+              key={msg.id}
+              className={`flex ${
+                msg.senderId === currentUser?.uid ? "justify-end" : "justify-start"
               }`}
             >
-              {msg.text}
+              <div
+                className={`max-w-xs px-4 py-2 rounded-2xl text-sm ${
+                  msg.senderId === currentUser?.uid
+                    ? "bg-purple-500 text-white rounded-br-none"
+                    : "bg-gray-100 text-gray-800 rounded-bl-none"
+                }`}
+              >
+                {msg.text}
+              </div>
             </div>
-          </div>
-        ))}
-        <div ref={bottomRef} />
-      </div>
+          ))}
+          <div ref={bottomRef} />
+        </div>
 
-      {/* Input para enviar mensaje */}
-      <form
-        onSubmit={sendMessage}
-        className="flex mb-15 fixed bottom-1 w-screen items-center border-t border-gray-300 p-3 bg-gray-50"
-      >
-        <input
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Escribe un mensaje..."
-          className="flex-1 border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
-        />
-        <button
-          type="submit"
-          className="ml-2 p-2 bg-purple-600 text-white rounded-full hover:bg-purple-700"
+        {/* Input */}
+        <form
+          onSubmit={sendMessage}
+          className="flex fixed bottom-0 w-screen items-center border-t border-gray-300 p-3 bg-gray-50"
         >
-          <Send size={18} />
-        </button>
-      </form>
-    </div></section>
-   
+          <input
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Escribe un mensaje..."
+            className="flex-1 border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+          />
+          <button
+            type="submit"
+            className="ml-2 p-2 bg-purple-600 text-white rounded-full hover:bg-purple-700"
+          >
+            <Send size={18} />
+          </button>
+        </form>
+      </div>
+    </section>
   );
 }
