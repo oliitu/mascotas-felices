@@ -35,7 +35,7 @@ function App() {
 
   return (
     <Router>
-      <div className="mt-1 z-100 fixed">
+      <div className="mt-3 z-100 fixed">
           <BackButton />
         </div>
       <div className="pb-16">

@@ -38,7 +38,7 @@ export default function Perfil() {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center text-center">
-      <Toast message={toastMsg} /> {/* componente toast */}
+      <Toast className="justify-center" message={toastMsg} /> {/* componente toast */}
 
       <div className="bg-purple-200 rounded-full border-2 border-purple-500 h-24 w-24 flex items-center justify-center text-4xl font-bold text-purple-600 mb-4">
         <PawPrint size={42} />

@@ -66,60 +66,94 @@ const mascotasFiltradas = filtroEspecie
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
   {mascotasFiltradas.map((mascota) => (
+<div
+  key={mascota.id}
+  onClick={() =>
+    navigate(`/ver/${mascota.id}`, { state: { origen: "adopcion" } })
+  }
+  className="relative rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer group"
+>
+  {/* 🐾 Imagen de fondo */}
   <div
-    key={mascota.id}
-    onClick={() => navigate(`/ver/${mascota.id}`, { state: { origen: "adopcion" } })}
-    className="border border-gray-300 rounded-lg shadow-md p-6 bg-white hover:shadow-lg transition-shadow flex flex-col items-center text-center"
-  >
-    <h3 className="text-2xl font-semibold mb-3">{mascota.nombre}</h3>
+    className="h-64 sm:h-72 w-full bg-cover bg-center"
+    style={{
+      backgroundImage: `url(${mascota.imagen || "/img/default.jpg"})`,
+    }}
+  ></div>
 
-    {mascota.imagen && (
-      <img
-        src={mascota.imagen}
-        alt={mascota.nombre}
-        className="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-full mb-4"
-      />
-    )}
+  {/* 🖤 Degradado inferior */}
+  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+
+  {/* 📝 Texto superpuesto */}
+  <div className="absolute bottom-0 left-0 w-full text-white p-4 flex flex-col items-start">
+    <h3 className="text-2xl font-semibold mb-1 drop-shadow-md">
+      {mascota.nombre}
+    </h3>
 
     {mascota.genero && (
-      <p className="flex items-center justify-center gap-2 mb-2 text-lg">
+      <p className="flex items-center gap-2 text-lg drop-shadow-md">
         {mascota.genero === "macho" ? (
-          <span className="text-blue-600 flex items-center gap-1">
+          <span className="flex items-center gap-1 text-blue-300">
             <Mars className="w-5 h-5" /> Macho
           </span>
         ) : (
-          <span className="text-pink-600 flex items-center gap-1">
+          <span className="flex items-center gap-1 text-pink-300">
             <Venus className="w-5 h-5" /> Hembra
           </span>
         )}
       </p>
     )}
 
-    <p className="text-gray-700 text-base mb-1">{mascota.ciudad}</p>
-
-    {mascota.telefono && (
-      <p className="text-gray-800 text-base mt-2 mb-4">📞 {mascota.telefono}</p>
-    )}
-
-    {/* 👇 Mostrar según el estado del usuario */}
-    <div className="text-center">
-      {usuario ? (
-        usuario.uid !== mascota.userId && (
-          <ChatButton currentUserId={usuario.uid} ownerId={mascota.userId} />
-        )
-      ) : (
+  </div>
+{/* <div>
+  {usuario ? (
+    usuario.uid !== mascota.userId && (
+      <>
         <button
           onClick={(e) => {
-            e.stopPropagation(); // evita abrir el perfil
+            e.stopPropagation();
+            navigate(`/chat/${mascota.userId}`);
+          }}
+          className="absolute top-2 right-2 bg-purple-600 text-white p-2 rounded-full hover:bg-purple-700 sm:hidden transition"
+        >
+          <MessageCircle size={20} />
+        </button>
+
+        <div className="absolute inset-0 hidden sm:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <ChatButton currentUserId={usuario.uid} ownerId={mascota.userId} />
+        </div>
+      </>
+    )
+  ) : (
+    <>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          navigate("/registro");
+        }}
+        className="absolute top-2 right-2 bg-purple-600 text-white p-2 rounded-full hover:bg-purple-700 sm:hidden transition"
+      >
+        <MessageCircle size={20} />
+      </button>
+
+      <div className="absolute inset-0 hidden sm:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
             navigate("/registro");
           }}
-          className="flex items-center justify-center gap-2 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition"
+          className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition text-sm sm:text-base"
         >
           Registrate para chatear
         </button>
-      )}
-    </div>
-  </div>
+      </div>
+    </>
+  )}
+  </div> */}
+  
+</div>
+
+
 ))}
 
 </div>

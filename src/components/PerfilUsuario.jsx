@@ -1,14 +1,23 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../../firebase";
+import { doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db, auth } from "../../firebase";
 import { UserCircle, Flag, Ban, ArrowLeft } from "lucide-react";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function PerfilUsuario() {
-  const { id } = useParams();
+  const { id } = useParams(); // ID del usuario visitado
   const [usuario, setUsuario] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
 
+  // Detectar usuario logueado
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => setCurrentUser(user));
+    return () => unsub();
+  }, []);
+
+  // Traer datos del usuario del perfil
   useEffect(() => {
     const fetchUser = async () => {
       const userRef = doc(db, "users", id);
@@ -18,17 +27,52 @@ export default function PerfilUsuario() {
     fetchUser();
   }, [id]);
 
+  // 📌 REPORTAR USUARIO
   const handleReportar = async () => {
-    alert("🚨 Usuario reportado. Nuestro equipo revisará el caso.");
+    if (!currentUser || !usuario) return;
+
+    try {
+      const reportesRef = collection(db, "reportes");
+      await addDoc(reportesRef, {
+        reportadoId: id,
+        reportadoNombre: usuario.name || "Sin nombre",
+        reportadoEmail: usuario.email,
+        reportadoFecha: serverTimestamp(),
+        reportadoPor: currentUser.uid,
+        reportadoPorEmail: currentUser.email,
+      });
+
+      alert("🚨 Usuario reportado correctamente. Nuestro equipo revisará el caso.");
+    } catch (error) {
+      console.error("Error al reportar:", error);
+      alert("Error al reportar usuario.");
+    }
   };
 
+  // 🚫 BLOQUEAR USUARIO
   const handleBloquear = async () => {
+    if (!currentUser) return;
+
     try {
-      const userRef = doc(db, "users", id);
-      await updateDoc(userRef, { bloqueado: true });
-      alert("❌ Usuario bloqueado correctamente.");
+      const bloqueosRef = doc(db, "bloqueos", currentUser.uid);
+      const bloqueosSnap = await getDoc(bloqueosRef);
+
+      // Si ya tiene bloqueos previos, agregamos este usuario
+      if (bloqueosSnap.exists()) {
+        const data = bloqueosSnap.data();
+        const nuevosBloqueos = [...(data.bloqueados || []), id];
+        await updateDoc(bloqueosRef, { bloqueados: nuevosBloqueos });
+      } else {
+        // Si no tiene documento, lo creamos
+        await setDoc(bloqueosRef, {
+          bloqueados: [id],
+        });
+      }
+
+      alert("❌ Usuario bloqueado correctamente. No recibirás más mensajes de él.");
     } catch (error) {
-      console.error(error);
+      console.error("Error al bloquear usuario:", error);
+      alert("Error al bloquear usuario.");
     }
   };
 
@@ -53,13 +97,13 @@ export default function PerfilUsuario() {
         >
           <Flag size={18} /> Reportar usuario
         </button>
-
+{/* 
         <button
           onClick={handleBloquear}
           className="w-full flex items-center justify-center gap-2 py-2 px-4 bg-red-500 text-white rounded hover:bg-red-600 transition"
         >
           <Ban size={18} /> Bloquear usuario
-        </button>
+        </button> */}
       </div>
     </div>
   );
