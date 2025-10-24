@@ -28,15 +28,15 @@ export default function QuienesSomos() {
               </p>
             </div>
             <p className="text-gray-600 text-xs sm:text-sm text-center mt-4">
-  App web desarrollada por{" "}
+  Manda mensaje a {" "} 
   <a
-    href="https://www.instagram.com/lituweb"
+    href="https://wa.me/5493541396868?text=Hola%20quiero%20consultar%20para%20hacer%20mi%20pagina%20web"
     target="_blank"
     rel="noopener noreferrer"
     className="font-semibold text-purple-600 hover:text-purple-700 underline"
   >
-    @lituweb
-  </a>
+    3541396868
+  </a> <p>para hacer tu pagina web</p>
 </p>
 
         </div>
